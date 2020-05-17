@@ -1,37 +1,83 @@
 # Linux_driver
 
-#### 介绍
+## 介绍
 Linux驱动开发
 
-#### 软件架构
-软件架构说明
+## 文件说明
 
+inlcude:
 
-#### 安装教程
+    Linux驱动开发的头文件
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1chrdevbase：
 
-#### 使用说明
+    字符驱动开发的模板
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+2Led：
 
-#### 参与贡献
+    LED驱动开发
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+3newchrled ：
 
+    新LED字符驱动开发
 
-#### 码云特技
+## 使用说明
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+输入如下命令编译出驱动模块文件：
+
+```shell
+make
+```
+编译成功以后就会生成一个名为“xxx.ko”的驱动模块文件
+
+输入如下命令编译测试 xxxAPP.c 这个测试程序
+```shell
+arm-linux-gnueabihf-gcc xxxAPP.c -o xxxApp
+```
+编译成功以后就会生成 xxxApp 这个应用程序
+
+输入如下命令查看xxxAPP 这个程序的文件信息
+```shell
+file xxxApp
+```
+
+编译出来的 xxx.ko 和 xxxApp 这两个文件拷贝到 指定 目录中
+```shell
+sudo cp xxx.ko xxxApp /home/xxx -f
+```
+
+重启开发板，进入到指定的目录
+```shell
+cd /home/xxx
+```
+
+第一次加载驱动的时候需要运行此命令
+```shell
+depmod
+```
+驱动加载成功以后创建“/dev/xxx”设备节点
+
+使用 modprobe 加载 xxx.ko
+```shell
+modprobe xxx.ko
+````
+
+输入“ lsmod ”命令即可查看当前系统中存在的模块
+```shell
+lsmod
+````
+
+创建设备节点文件
+```shell
+mknod /dev/xxx 字符设备 主设备号 次设备号
+```
+
+设备操作测试
+```shell
+./xxxApp /dev/xxx 参数
+```
+
+卸载驱动模块
+```shell
+rmmod xxx.ko
+```
