@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-16 21:43:02
- * @LastEditTime: 2020-05-17 09:45:08
+ * @LastEditTime: 2020-05-17 13:52:09
  * @FilePath: \Linux_driver\chrdevbase\chrdevbase.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -24,7 +24,7 @@ static char kerneldata[] = {"kernel data!"};
  * 设备操作函数结构体
  */
 static struct file_operations chrdevbase_fops = {
-	.owner = THIS_MODULE,	
+	.owner = THIS_MODULE,
 	.open = chrdevbase_open,
 	.read = chrdevbase_read,
 	.write = chrdevbase_write,
@@ -43,6 +43,7 @@ static struct file_operations chrdevbase_fops = {
  */
 static int chrdevbase_open(struct inode *inode, struct file *filp)
 {
+    /*  printf运行在用户态， printk 运行在内核态 */
     printk("chrdevbase open!\r\n");
     return 0;
 }
@@ -64,8 +65,20 @@ static ssize_t chrdevbase_read(struct file *filp, char __user *buf, size_t cnt, 
     int retvalue = 0;
 
     /* 向用户空间发送数据 */
+    /* 将 kerneldata 数组中的数据拷贝到读缓冲区 readbuf */
     memcpy(readbuf, kerneldata, sizeof(kerneldata));
 
+    /**
+     * @function: 完成内核空间的数据到用户空间的复制
+     * @parameter: 
+     *       buf： 目的
+     *       readbuf： 源  
+     *       cnt： 要复制的数据长度
+     * @return: 
+    *     success: 0
+    *     error:负值
+     * @note: 
+     */
     retvalue = copy_to_user(buf, readbuf, cnt);
     if(retvalue == 0)
     {
@@ -110,3 +123,87 @@ static ssize_t chrdevbase_write(struct file *filp, const char __user *buf, size_
     printk("chrdevbase write!\r\n");
 	return 0;
 }
+
+/**
+ * @function: 关闭/释放设备
+ * @parameter: 
+ *       filp : 要关闭的设备文件(文件描述符)
+ * @return: 
+ *     success: 0
+ *     error: 其他值
+ * @note: 
+ */
+static int chrdevbase_release(struct inode *inode, struct file *filp)
+{
+    printk("chrdevbase release！\r\n");
+	return 0;
+}
+
+/**
+ * @function: 驱动入口函数 
+ * @parameter: 
+ * @return: 
+ *     success: 0
+ *     error: 其他
+ * @note: 
+ */
+static int __init chrdevbase_init(void)
+{
+    int retvalue = 0;
+
+    /**
+     * @function: 注册字符设备驱动
+     * @parameter: 
+     *      CHRDEVBASE_MAJOR：主设备号
+     *      CHRDEVBASE_NAME： 设备名字
+     *      chrdevbase_fops：指向设备的操作函数集合变量
+     * @return: 
+     *     success: 
+     *     error:
+     * @note: 
+     */
+    retvalue = register_chrdev(CHRDEVBASE_MAJOR, CHRDEVBASE_NAME, &chrdevbase_fops);
+    if(retvalue < 0)
+    {
+        printk("chrdevbase driver register failed\r\n");
+    }
+    
+	printk("chrdevbase init!\r\n");
+	return 0;
+}
+
+/**
+ * @function: 驱动出口函数
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
+static void __exit chrdevbase_exit(void)
+{
+    /**
+     * @function: 注销字符设备驱动
+     * @parameter: 
+     *      CHRDEVBASE_MAJOR：要注销的设备对应的主设备号
+     *      CHRDEVBASE_NAME：要注销的设备对应的设备名
+     * @return: 
+     *     success: 
+     *     error:
+     * @note: 
+     */   
+	unregister_chrdev(CHRDEVBASE_MAJOR, CHRDEVBASE_NAME);
+	printk("chrdevbase exit!\r\n");
+}
+
+/* 
+ * 将上面两个函数指定为驱动的入口和出口函数 
+ */
+module_init(chrdevbase_init);
+module_exit(chrdevbase_exit);
+
+/* 
+ * LICENSE和作者信息
+ */
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("cpucode");
