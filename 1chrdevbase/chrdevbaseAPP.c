@@ -1,11 +1,12 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:56:54
- * @LastEditTime: 2020-05-17 11:37:17
- * @FilePath: \Linux_driver\chrdevbase\chrdevbaseAPP.c
+ * @LastEditTime: 2020-05-17 14:15:08
+ * @FilePath: \Linux_driver\1chrdevbase\chrdevbaseAPP.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
  */ 
+
 #include "stdio.h"
 #include "unistd.h"
 #include "sys/types.h"

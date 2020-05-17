@@ -1,11 +1,12 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-16 21:43:02
- * @LastEditTime: 2020-05-17 13:52:09
- * @FilePath: \Linux_driver\chrdevbase\chrdevbase.c
+ * @LastEditTime: 2020-05-17 14:14:58
+ * @FilePath: \Linux_driver\1chrdevbase\chrdevbase.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
  */ 
+
 #include <linux/types.h>
 #include <linux/kernel.h>
 #include <linux/delay.h>

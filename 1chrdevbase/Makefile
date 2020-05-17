@@ -2,7 +2,7 @@
  # @Author: cpu_code
  # @Date: 2020-05-17 10:36:33
  # @LastEditTime: 2020-05-17 13:41:18
- # @FilePath: \Linux_driver\chrdevbase\Makefile
+ # @FilePath: \Linux_driver\1chrdevbase\Makefile
  # @Gitee: https://gitee.com/cpu_code
  # @CSDN: https://blog.csdn.net/qq_44226094
  #
