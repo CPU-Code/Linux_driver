@@ -2672,6 +2672,17 @@ extern int __register_chrdev(unsigned int major, unsigned int baseminor,
 			     const struct file_operations *fops);
 extern void __unregister_chrdev(unsigned int major, unsigned int baseminor,
 				unsigned int count, const char *name);
+
+/**
+ * @function: 注销设备号
+ * @parameter: 
+ *      newchrled.devid：要释放的设备号
+ *      NEWCHRLED_CNT： NEWCHRLED_CNT
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void unregister_chrdev_region(dev_t, unsigned);
 extern void chrdev_show(struct seq_file *,off_t);
 

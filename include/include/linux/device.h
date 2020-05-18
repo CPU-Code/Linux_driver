@@ -787,10 +787,30 @@ extern void class_interface_unregister(struct class_interface *);
 extern struct class * __must_check __class_create(struct module *owner,
 						  const char *name,
 						  struct lock_class_key *key);
+/**
+ * @function: 删除掉类
+ * @parameter: 
+ *      newchrled.class:要删除的类
+ * @return: 
+ *     success: 
+ *     error:
+ * @note:  文件include/linux/device.h
+ */
 extern void class_destroy(struct class *cls);
 
 /* This is a #define to keep the compiler from merging different
  * instances of the __key variable */
+
+/**
+ * @function: 类创建
+ * @parameter: 
+ * 		owner: 一般为 THIS_MODULE
+ * 		 name: 类名字
+ * @return: 
+ *     success: 指向结构体 class 的指针
+ *     error:
+ * @note: 
+ */
 #define class_create(owner, name)		\
 ({						\
 	static struct lock_class_key __key;	\
@@ -1604,6 +1624,20 @@ struct device *device_create_vargs(struct class *cls, struct device *parent,
 				   dev_t devt, void *drvdata,
 				   const char *fmt, va_list vargs);
 extern __printf(5, 6)
+
+/**
+ * @function: 在类下面创建设备
+ * @parameter: 
+ * 		cls: 设备要创建哪个类下面
+ * 		parent: 父设备，一般为 NULL，也就是没有父设备
+ * 		devt: 设备号
+ * 		drvdata:设备可能会使用的一些数据，一般为 NULL
+ * 		fmt: 设备名字,如 设置 fmt=xxx 的话，就会生成/dev/xxx这个设备文件
+ * @return: 
+ *     success: 创建好的设备
+ *     error:
+ * @note: 
+ */
 struct device *device_create(struct class *cls, struct device *parent,
 			     dev_t devt, void *drvdata,
 			     const char *fmt, ...);
@@ -1612,6 +1646,17 @@ struct device *device_create_with_groups(struct class *cls,
 			     struct device *parent, dev_t devt, void *drvdata,
 			     const struct attribute_group **groups,
 			     const char *fmt, ...);
+
+/**
+ * @function: 需要删除掉创建的设备
+ * @parameter: 
+ * 		cls: 要删除的设备所处的类
+ * 		devt: 要删除的设备号
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void device_destroy(struct class *cls, dev_t devt);
 
 extern int __must_check device_add_groups(struct device *dev,
