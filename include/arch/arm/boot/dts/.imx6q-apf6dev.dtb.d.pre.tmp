@@ -1,0 +1,11 @@
+imx6q-apf6dev.o: arch/arm/boot/dts/imx6q-apf6dev.dts \
+ arch/arm/boot/dts/imx6q.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6q-pinfunc.h arch/arm/boot/dts/imx6qdl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6qdl-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ arch/arm/boot/dts/imx6qdl-apf6.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ arch/arm/boot/dts/imx6qdl-apf6dev.dtsi

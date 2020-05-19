@@ -1,0 +1,7 @@
+imx35-eukrea-mbimxsd35-baseboard.o: \
+ arch/arm/boot/dts/imx35-eukrea-mbimxsd35-baseboard.dts \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ arch/arm/boot/dts/imx35-eukrea-cpuimx35.dtsi \
+ arch/arm/boot/dts/imx35.dtsi arch/arm/boot/dts/imx35-pinfunc.h

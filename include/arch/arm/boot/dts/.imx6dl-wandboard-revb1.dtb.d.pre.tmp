@@ -1,0 +1,11 @@
+imx6dl-wandboard-revb1.o: arch/arm/boot/dts/imx6dl-wandboard-revb1.dts \
+ arch/arm/boot/dts/imx6dl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6dl-pinfunc.h arch/arm/boot/dts/imx6qdl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6qdl-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ arch/arm/boot/dts/imx6qdl-wandboard-revb1.dtsi \
+ arch/arm/boot/dts/imx6qdl-wandboard.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h

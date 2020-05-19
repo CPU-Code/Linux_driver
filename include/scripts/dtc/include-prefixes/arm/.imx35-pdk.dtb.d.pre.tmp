@@ -1,0 +1,2 @@
+imx35-pdk.o: arch/arm/boot/dts/imx35-pdk.dts arch/arm/boot/dts/imx35.dtsi \
+ arch/arm/boot/dts/imx35-pinfunc.h

@@ -1,3 +1,12 @@
+/**
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:59
+ * @LastEditTime: 2020-05-19 09:49:50
+ * @FilePath: \Linux_driver\include\include\linux\of.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
 /* SPDX-License-Identifier: GPL-2.0+ */
 #ifndef _LINUX_OF_H
 #define _LINUX_OF_H
@@ -28,11 +37,12 @@
 typedef u32 phandle;
 typedef u32 ihandle;
 
+/* 节点的属性信息 */
 struct property {
-	char	*name;
-	int	length;
-	void	*value;
-	struct property *next;
+	char	*name;			/* 属性名字 */
+	int	length;				/* 属性长度 */
+	void	*value;			/* 属性值 */
+	struct property *next;	/* 下一个属性 */
 #if defined(CONFIG_OF_DYNAMIC) || defined(CONFIG_SPARC)
 	unsigned long _flags;
 #endif
@@ -48,16 +58,16 @@ struct property {
 struct of_irq_controller;
 #endif
 
+/* 描述一个节点 */
 struct device_node {
-	const char *name;
+	const char *name;	/* 节点名字 */
 	phandle phandle;
-	const char *full_name;
+	const char *full_name;	/* 节点全名 */
 	struct fwnode_handle fwnode;
-
-	struct	property *properties;
+	struct	property *properties;	/* 属性 */
 	struct	property *deadprops;	/* removed properties */
-	struct	device_node *parent;
-	struct	device_node *child;
+	struct	device_node *parent;	/* 父节点 */
+	struct	device_node *child;		/* 子节点 */
 	struct	device_node *sibling;
 #if defined(CONFIG_OF_KOBJ)
 	struct	kobject kobj;
@@ -264,12 +274,59 @@ static inline const char *of_node_full_name(const struct device_node *np)
 #define for_each_of_allnodes_from(from, dn) \
 	for (dn = __of_find_all_nodes(from); dn; dn = __of_find_all_nodes(dn))
 #define for_each_of_allnodes(dn) for_each_of_allnodes_from(NULL, dn)
+
+/**
+ * @function: 通过节点名字查找指定的节点
+ * @parameter: 
+ * 		from：开始查找的节点，如 为 NULL 表示从根节点开始查找整个设备树
+ * 		name：要查找的节点名字
+ * @return: 
+ *     success: 找到的节点
+ *     error: NULL 
+ * @note: 
+ */
 extern struct device_node *of_find_node_by_name(struct device_node *from,
 	const char *name);
+
+/**
+ * @function: 通过 device_type 属性查找指定的节点
+ * @parameter: 
+ * 		from：开始查找的节点，如 为 NULL 表示从根节点开始查找整个设备树
+ * 		type：要查找的节点对应的 type 字符串，也就是 device_type 属性值
+ * @return: 
+ *     success: 找到的节点
+ *     error: NULL
+ * @note: 
+ */
 extern struct device_node *of_find_node_by_type(struct device_node *from,
 	const char *type);
+
+/**
+ * @function: 根据 device_type 和 compatible 这两个属性查找指定的节点
+ * @parameter: 
+ * 		from：开始查找的节点，如 为 NULL 表示从根节点开始查找整个设备树
+ * 		type：要查找的节点对应的 type 字符串，也就是 device_type 属性值，
+ * 				可以为 NULL，表示忽略掉 device_type 属性
+ * 		compatible： 要查找的节点所对应的 compatible 属性列表
+ * @return: 
+ *     success: 找到的节点
+ *     error: NULL
+ * @note: 
+ */
 extern struct device_node *of_find_compatible_node(struct device_node *from,
 	const char *type, const char *compat);
+
+/**
+ * @function: 通过 of_device_id 匹配表来查找指定的节点
+ * @parameter: 
+ * 		from：开始查找的节点，如果为 NULL 表示从根节点开始查找整个设备树
+ * 		matches： of_device_id 匹配表，也就是在此匹配表里面查找节点
+ * 		match： 找到的匹配的 of_device_id
+ * @return: 
+ *     success: 找到的节点
+ *     error: NULL
+ * @note: 
+ */
 extern struct device_node *of_find_matching_node_and_match(
 	struct device_node *from,
 	const struct of_device_id *matches,
@@ -277,14 +334,48 @@ extern struct device_node *of_find_matching_node_and_match(
 
 extern struct device_node *of_find_node_opts_by_path(const char *path,
 	const char **opts);
+
+/**
+ * @function: 通过路径来查找指定的节点
+ * @parameter: 
+ * 		path：带有全路径的节点名，可以使用节点的别名，
+ * 				如 “/backlight”就是 backlight 这个节点的全路径
+ * @return: 
+ *     success: 找到的节点
+ *     error: NULL
+ * @note: 
+ */
 static inline struct device_node *of_find_node_by_path(const char *path)
 {
 	return of_find_node_opts_by_path(path, NULL);
 }
 
 extern struct device_node *of_find_node_by_phandle(phandle handle);
+
+/**
+ * @function: 获取指定节点的父节点( 如有父节点的话 )
+ * @parameter: 
+ * 		node：要查找的父节点的节点
+ * @return: 
+ *     success: 找到的父节点
+ *     error:
+ * @note: 
+ */
 extern struct device_node *of_get_parent(const struct device_node *node);
+
 extern struct device_node *of_get_next_parent(struct device_node *node);
+
+/**
+ * @function: 用迭代的查找子节点
+ * @parameter: 
+ * 		node：父节点
+ * 		prev：前一个子节点，也就是从哪一个子节点开始迭代的查找下一个子节点。
+ * 				可设置为NULL，表示从第一个子节点开始
+ * @return: 
+ *     success: 找到的下一个子节点
+ *     error:
+ * @note: 
+ */
 extern struct device_node *of_get_next_child(const struct device_node *node,
 					     struct device_node *prev);
 extern struct device_node *of_get_next_available_child(
@@ -301,17 +392,60 @@ extern int of_find_last_cache_level(unsigned int cpu);
 extern struct device_node *of_find_node_with_property(
 	struct device_node *from, const char *prop_name);
 
+/**
+ * @function: 用于查找指定的属性
+ * @parameter: 
+ * 		np：设备节点
+ * 		name： 属性名字
+ * 		lenp：属性值的字节数
+ * @return: 
+ *     success: 找到的属性
+ *     error:
+ * @note: 
+ */
 extern struct property *of_find_property(const struct device_node *np,
 					 const char *name,
 					 int *lenp);
+
+/**
+ * @function: 用于获取属性中元素的数量，如 reg 属性值是一个数组，就能用此函数获取到这个数组的大小
+ * @parameter: 
+ * 		np：设备节点
+ * 		proname： 需要统计元素数量的属性名字
+ * 		elem_size：元素长度
+ * @return: 
+ *     success: 得到的属性元素数量
+ *     error:
+ * @note: 
+ */
 extern int of_property_count_elems_of_size(const struct device_node *np,
 				const char *propname, int elem_size);
+
+/**
+ * @function: 用于从属性中获取指定标号的 u32 类型数据值(无符号 32位)，
+ * 				如 某个属性有多个 u32 类型的值，就可以使用此函数来获取指定标号的数据值
+ * @parameter: 
+ * 		np：设备节点
+ * 		proname： 要读取的属性名字
+ * 		index：要读取的值标号
+ * 		out_value：读取到的值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ * 		-EINVAL ：属性不存在
+ * 		-ENODATA ：没有要读取的数据
+ * 		-EOVERFLOW ：属性值列表太小
+ */
 extern int of_property_read_u32_index(const struct device_node *np,
 				       const char *propname,
 				       u32 index, u32 *out_value);
+
 extern int of_property_read_u64_index(const struct device_node *np,
 				       const char *propname,
 				       u32 index, u64 *out_value);
+
+
 extern int of_property_read_variable_u8_array(const struct device_node *np,
 					const char *propname, u8 *out_values,
 					size_t sz_min, size_t sz_max);
@@ -323,25 +457,52 @@ extern int of_property_read_variable_u32_array(const struct device_node *np,
 					u32 *out_values,
 					size_t sz_min,
 					size_t sz_max);
-extern int of_property_read_u64(const struct device_node *np,
-				const char *propname, u64 *out_value);
 extern int of_property_read_variable_u64_array(const struct device_node *np,
 					const char *propname,
 					u64 *out_values,
 					size_t sz_min,
 					size_t sz_max);
 
+extern int of_property_read_u64(const struct device_node *np,
+				const char *propname, u64 *out_value);
+
+/**
+ * @function: 用于读取属性中字符串值
+ * @parameter: 
+ * 		np：设备节点
+ * 		proname： 要读取的属性名字
+ * 		out_string：读取到的字符串值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 extern int of_property_read_string(const struct device_node *np,
 				   const char *propname,
 				   const char **out_string);
+
 extern int of_property_match_string(const struct device_node *np,
 				    const char *propname,
 				    const char *string);
 extern int of_property_read_string_helper(const struct device_node *np,
 					      const char *propname,
 					      const char **out_strs, size_t sz, int index);
+
+/**
+ * @function: 用于查看节点的 compatible 属性是否有包含 compat 指定的字符串，
+ * 				也就是检查设备节点的兼容性
+ * @parameter: 
+ * 		device：设备节点
+ * 		compat：要查看的字符串
+ * @return: 
+ *     success: 正数，节点的 compatible属性中包含 compat 指定的字符串
+ *     error: 0，节点的 compatible 属性中不包含 compat 指定的字符串
+ * @note: 
+ */
 extern int of_device_is_compatible(const struct device_node *device,
 				   const char *);
+
+
 extern int of_device_compatible_match(struct device_node *device,
 				      const char *const *compat);
 extern bool of_device_is_available(const struct device_node *device);
@@ -355,8 +516,28 @@ extern struct device_node *of_get_next_cpu_node(struct device_node *prev);
 #define for_each_property_of_node(dn, pp) \
 	for (pp = dn->properties; pp != NULL; pp = pp->next)
 
+/**
+ * @function: 用于获取#address-cells 属性值
+ * @parameter: 
+ * 		np：设备节点
+ * @return: 
+ *     success: 获取到的#address-cells 属性值
+ *     error:
+ * @note: 
+ */
 extern int of_n_addr_cells(struct device_node *np);
+
+/**
+ * @function: 用于获取#size-cells 属性值
+ * @parameter: 
+ * 		np：设备节点
+ * @return: 
+ *     success: 获取到的#size-cells 属性值
+ *     error:
+ * @note: 
+ */
 extern int of_n_size_cells(struct device_node *np);
+
 extern const struct of_device_id *of_match_node(
 	const struct of_device_id *matches, const struct device_node *node);
 extern int of_modalias_node(struct device_node *node, char *modalias, int len);
@@ -430,6 +611,22 @@ extern int of_detach_node(struct device_node *);
  *	property = /bits/ 8 <0x50 0x60 0x70>;
  *
  * The out_values is modified only if a valid u8 value can be decoded.
+ */
+/**
+ * @function: 读取属性中 u8 类型的数组数据
+ * 				如 大多数的 reg 属性都是数组数据，可使用 该函数一次读取出 reg 属性中的所有数据
+ * @parameter: 
+ * 		np：设备节点
+ * 		proname： 要读取的属性名字
+ * 		out_value：读取到的数组值，分别为 u8、 u16、 u32 和 u64
+ * 		sz： 要读取的数组元素数量
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ *		EINVAL ：属性不存在
+ * 		-ENODATA ：没有要读取的数据
+ * 		-EOVERFLOW ：属性值列表太小
+ * @note: 
  */
 static inline int of_property_read_u8_array(const struct device_node *np,
 					    const char *propname,
@@ -1179,6 +1376,21 @@ static inline bool of_property_read_bool(const struct device_node *np,
 	return prop ? true : false;
 }
 
+/**
+ * @function: 有些属性只有一个整形值，这四个函数就是用于读取这种只有一个整形值的属性，
+ * 				分别用于读取 u8、 u16、 u32 和 u64 类型属性值
+ * @parameter: 
+ * 		np：设备节点
+ * 		proname： 要读取的属性名字
+ * 		out_value：读取到的数组值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * 		-EINVAL ：属性不存在
+ * 		-ENODATA ：没有要读取的数据
+ * 		-EOVERFLOW ：属性值列表太小
+ * @note: 
+ */
 static inline int of_property_read_u8(const struct device_node *np,
 				       const char *propname,
 				       u8 *out_value)

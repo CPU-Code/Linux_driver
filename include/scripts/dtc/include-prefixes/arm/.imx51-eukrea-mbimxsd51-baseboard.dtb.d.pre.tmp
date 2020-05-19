@@ -1,0 +1,9 @@
+imx51-eukrea-mbimxsd51-baseboard.o: \
+ arch/arm/boot/dts/imx51-eukrea-mbimxsd51-baseboard.dts \
+ arch/arm/boot/dts/imx51-eukrea-cpuimx51.dtsi \
+ arch/arm/boot/dts/imx51.dtsi arch/arm/boot/dts/imx51-pinfunc.h \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx5-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h

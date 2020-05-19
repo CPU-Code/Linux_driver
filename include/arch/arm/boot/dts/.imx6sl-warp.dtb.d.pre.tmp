@@ -1,0 +1,6 @@
+imx6sl-warp.o: arch/arm/boot/dts/imx6sl-warp.dts \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ arch/arm/boot/dts/imx6sl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6sl-pinfunc.h \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6sl-clock.h

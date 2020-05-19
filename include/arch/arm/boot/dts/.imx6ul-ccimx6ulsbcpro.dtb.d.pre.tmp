@@ -1,0 +1,10 @@
+imx6ul-ccimx6ulsbcpro.o: arch/arm/boot/dts/imx6ul-ccimx6ulsbcpro.dts \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6ul.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6ul-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ arch/arm/boot/dts/imx6ul-pinfunc.h \
+ arch/arm/boot/dts/imx6ul-ccimx6ulsom.dtsi

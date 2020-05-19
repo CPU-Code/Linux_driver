@@ -1,0 +1,7 @@
+imx7ulp-evk.o: arch/arm/boot/dts/imx7ulp-evk.dts \
+ arch/arm/boot/dts/imx7ulp.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx7ulp-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx7ulp-pinfunc.h

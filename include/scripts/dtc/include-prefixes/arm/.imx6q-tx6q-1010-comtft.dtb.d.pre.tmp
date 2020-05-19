@@ -1,0 +1,13 @@
+imx6q-tx6q-1010-comtft.o: arch/arm/boot/dts/imx6q-tx6q-1010-comtft.dts \
+ arch/arm/boot/dts/imx6q.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6q-pinfunc.h arch/arm/boot/dts/imx6qdl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6qdl-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ arch/arm/boot/dts/imx6qdl-tx6.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/pwm/pwm.h \
+ scripts/dtc/include-prefixes/dt-bindings/sound/fsl-imx-audmux.h \
+ arch/arm/boot/dts/imx6qdl-tx6-lcd.dtsi

@@ -1,0 +1,4 @@
+imx50-evk.o: arch/arm/boot/dts/imx50-evk.dts arch/arm/boot/dts/imx50.dtsi \
+ arch/arm/boot/dts/imx50-pinfunc.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx5-clock.h

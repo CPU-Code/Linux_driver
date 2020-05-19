@@ -1,3 +1,12 @@
+/**
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:47
+ * @LastEditTime: 2020-05-19 09:49:37
+ * @FilePath: \Linux_driver\include\include\linux\ioport.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * ioport.h	Definitions of routines for detecting, reserving and
@@ -17,11 +26,12 @@
  * Resources are tree-like, allowing
  * nesting etc..
  */
+/* 描述的都是设备资源信息 */
 struct resource {
-	resource_size_t start;
-	resource_size_t end;
-	const char *name;
-	unsigned long flags;
+	resource_size_t start;		//开始地址
+	resource_size_t end;		//结束地址
+	const char *name;			//资源的名字
+	unsigned long flags;		//资源标志位，一般表示资源类型
 	unsigned long desc;
 	struct resource *parent, *sibling, *child;
 };
@@ -32,6 +42,7 @@ struct resource {
  * PCI devices expose these flags to userspace in the "resource" sysfs file,
  * so don't move them.
  */
+/* 资源标志 */
 #define IORESOURCE_BITS		0x000000ff	/* Bus-specific bits */
 
 #define IORESOURCE_TYPE_BITS	0x00001f00	/* Resource type */

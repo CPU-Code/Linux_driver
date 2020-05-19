@@ -1,0 +1,14 @@
+imx6q-cubox-i-emmc-som-v15.o: \
+ arch/arm/boot/dts/imx6q-cubox-i-emmc-som-v15.dts \
+ arch/arm/boot/dts/imx6q.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6q-pinfunc.h arch/arm/boot/dts/imx6qdl.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6qdl-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ arch/arm/boot/dts/imx6qdl-sr-som.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi \
+ arch/arm/boot/dts/imx6qdl-sr-som-emmc.dtsi \
+ arch/arm/boot/dts/imx6qdl-cubox-i.dtsi

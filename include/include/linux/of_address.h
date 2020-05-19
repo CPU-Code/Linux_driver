@@ -1,3 +1,12 @@
+/**
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:59
+ * @LastEditTime: 2020-05-19 09:49:14
+ * @FilePath: \Linux_driver\include\include\linux\of_address.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef __OF_ADDRESS_H
 #define __OF_ADDRESS_H
@@ -31,16 +40,64 @@ extern u64 of_translate_dma_address(struct device_node *dev,
 				    const __be32 *in_addr);
 
 #ifdef CONFIG_OF_ADDRESS
+
+/**
+ * @function: 将从设备树读取到的地址转换为物理地址
+ * @parameter: 
+ * 		np：设备节点
+ * 		addr：要转换的地址
+ * @return: 
+ *     success: 得到的物理地址
+ *     error: OF_BAD_ADDR 
+ * @note: 
+ */
 extern u64 of_translate_address(struct device_node *np, const __be32 *addr);
+
+/**
+ * @function: 将 reg 属性值，然后将其转换为 resource 结构体类型
+ * @parameter: 
+ * 		dev：设备节点
+ * 		index：地址资源标号
+ * 		r：得到的 resource 类型的资源值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 extern int of_address_to_resource(struct device_node *dev, int index,
 				  struct resource *r);
+
+/**
+ * @function: 将 reg 属性中地址信息转换为虚拟地址，
+ * 				如 reg 属性有多段的话，可通过 index 参数指定要完成内存映射的是哪一段
+ * @parameter:
+ * 		device：设备节点
+ * 		index：reg 属性中要完成内存映射的段，如 reg 属性只有一段的话 index 就设置为 0
+ * @return: 
+ *     success: 经过内存映射后的虚拟内存首地址
+ *     error: NULL
+ * @note: 
+ */
 extern void __iomem *of_iomap(struct device_node *device, int index);
+
 void __iomem *of_io_request_and_map(struct device_node *device,
 				    int index, const char *name);
 
 /* Extract an address from a device, returns the region size and
  * the address space flags too. The PCI version uses a BAR number
  * instead of an absolute index
+ */
+/**
+ * @function: 用于获取地址相关属性，主要是“ reg ”或 “ assigned-addresses ”属性值
+ * @parameter:
+ * 		dev：设备节点
+ * 		index： 要读取的地址标号
+ * 		size：地址长度
+ * 		flags：参数，如 IORESOURCE_IO、 IORESOURCE_MEM 
+ * @return: 
+ *     success: 读取到的地址数据首地址
+ *     error: NULL
+ * @note: 
  */
 extern const __be32 *of_get_address(struct device_node *dev, int index,
 			   u64 *size, unsigned int *flags);

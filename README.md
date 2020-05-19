@@ -9,6 +9,19 @@ inlcude:
 
     Linux驱动开发的头文件
 
+    include:
+
+    arch\arm:
+
+        boot\dts:设备树、 imx6ull.dtsi 、Makefile、imx6ul.dtsi
+
+        include: 头文件
+
+    scripts\dtc: 
+
+        dtc工具、Makefile
+
+
 1chrdevbase：
 
     字符驱动开发的模板

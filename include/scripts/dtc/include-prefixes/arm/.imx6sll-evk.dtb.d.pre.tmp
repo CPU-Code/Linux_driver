@@ -1,0 +1,9 @@
+imx6sll-evk.o: arch/arm/boot/dts/imx6sll-evk.dts \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/input.h \
+ scripts/dtc/include-prefixes/dt-bindings/input/linux-event-codes.h \
+ arch/arm/boot/dts/imx6sll.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/clock/imx6sll-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ arch/arm/boot/dts/imx6sll-pinfunc.h

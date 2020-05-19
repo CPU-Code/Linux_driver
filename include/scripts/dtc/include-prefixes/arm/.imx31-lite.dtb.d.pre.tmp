@@ -1,0 +1,4 @@
+imx31-lite.o: arch/arm/boot/dts/imx31-lite.dts \
+ arch/arm/boot/dts/imx31.dtsi \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h

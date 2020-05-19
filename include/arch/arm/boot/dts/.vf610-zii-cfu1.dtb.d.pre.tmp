@@ -1,0 +1,7 @@
+vf610-zii-cfu1.o: arch/arm/boot/dts/vf610-zii-cfu1.dts \
+ arch/arm/boot/dts/vf610.dtsi arch/arm/boot/dts/vf500.dtsi \
+ arch/arm/boot/dts/vfxxx.dtsi arch/arm/boot/dts/vf610-pinfunc.h \
+ scripts/dtc/include-prefixes/dt-bindings/clock/vf610-clock.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/irq.h \
+ scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h \
+ scripts/dtc/include-prefixes/dt-bindings/interrupt-controller/arm-gic.h
