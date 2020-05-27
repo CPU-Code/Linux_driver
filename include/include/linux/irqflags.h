@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:47
+ * @LastEditTime: 2020-05-27 21:34:15
+ * @FilePath: \Linux_driver\include\include\linux\irqflags.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * include/linux/irqflags.h
@@ -137,12 +145,47 @@ do {						\
 
 #else /* !CONFIG_TRACE_IRQFLAGS */
 
+/**
+ * @function: 使能当前处理器中断系统
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define local_irq_enable()	do { raw_local_irq_enable(); } while (0)
+
+/**
+ * @function: 禁止当前处理器中断系统
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define local_irq_disable()	do { raw_local_irq_disable(); } while (0)
+
+/**
+ * @function: 禁止中断，并且将中断状态保存在 flags 中
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define local_irq_save(flags)					\
 	do {							\
 		raw_local_irq_save(flags);			\
 	} while (0)
+
+/**
+ * @function: 恢复中断，将中断到 flags 状态
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */	
 #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
 #define safe_halt()		do { raw_safe_halt(); } while (0)
 

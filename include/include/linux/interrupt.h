@@ -26,10 +26,15 @@
  * setting should be assumed to be "as already configured", which
  * may be as per machine or firmware initialisation.
  */
+/* 无触发 */
 #define IRQF_TRIGGER_NONE	0x00000000
+/* 上升沿触发 */
 #define IRQF_TRIGGER_RISING	0x00000001
+/* 下降沿触发 */
 #define IRQF_TRIGGER_FALLING	0x00000002
+/* 高电平触发 */
 #define IRQF_TRIGGER_HIGH	0x00000004
+/* 低电平触发 */
 #define IRQF_TRIGGER_LOW	0x00000008
 #define IRQF_TRIGGER_MASK	(IRQF_TRIGGER_HIGH | IRQF_TRIGGER_LOW | \
 				 IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING)
@@ -62,12 +67,17 @@
  *                wakeup devices users need to implement wakeup detection in
  *                their interrupt handlers.
  */
+/**
+ * 多个设备共享一个中断线，共享的所有中断都必须指定此标志。
+ * 如 使用共享中断的话， request_irq 函数的 dev 参数就是唯一区分他们的标志 
+ */
 #define IRQF_SHARED		0x00000080
 #define IRQF_PROBE_SHARED	0x00000100
 #define __IRQF_TIMER		0x00000200
 #define IRQF_PERCPU		0x00000400
 #define IRQF_NOBALANCING	0x00000800
 #define IRQF_IRQPOLL		0x00001000
+/* 单次中断，中断执行一次就结束 */
 #define IRQF_ONESHOT		0x00002000
 #define IRQF_NO_SUSPEND		0x00004000
 #define IRQF_FORCE_RESUME	0x00008000
@@ -89,6 +99,16 @@ enum {
 	IRQC_IS_NESTED,
 };
 
+/**
+ * @function: 中断处理函数
+ * @parameter: 
+ * 		第一个参数是要中断处理函数要相应的中断号
+ * 		第二个参数是一个通用指针，需要与 request_irq 函数的 dev 参数保持一致
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 typedef irqreturn_t (*irq_handler_t)(int, void *);
 
 /**
@@ -153,6 +173,25 @@ request_threaded_irq(unsigned int irq, irq_handler_t handler,
  * This call allocates an interrupt and establishes a handler; see
  * the documentation for request_threaded_irq() for details.
  */
+/**
+ * @function: 申请中断
+ * @parameter: 
+ * 		irq：要申请中断的中断号
+ * 		handler：中断处理函数
+ * 		flags：中断标志, include/linux/interrupt.h
+ * 			IRQF_SHARED：多个设备共享一个中断线
+ * 			IRQF_ONESHOT：单次中断，中断执行一次就结束
+ * 			IRQF_TRIGGER_NONE：	无触发
+ * 			IRQF_TRIGGER_RISING：上升沿触发
+ * 			IRQF_TRIGGER_FALLING：下降沿触发
+ * 			IRQF_TRIGGER_HIGH：高电平触发
+ * 			IRQF_TRIGGER_LOW：低电平触发
+ * 		name：中断名字
+ * @return: 
+ *     success: 0 
+ *     error: 其他负值
+ * @note: 如 返回-EBUSY , 中断已经被申请了
+ */
 static inline int __must_check
 request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,
 	    const char *name, void *dev)
@@ -185,6 +224,17 @@ extern int __must_check
 request_percpu_nmi(unsigned int irq, irq_handler_t handler,
 		   const char *devname, void __percpu *dev);
 
+/**
+ * @function: 释放掉相应的中断
+ * @parameter: 
+ * 		irq： 要释放的中断
+ * 		dev：如 中断设置为共享(IRQF_SHARED)的话，此用来区分具体的中断
+ * 				共享中断只有在释放，最后中断处理函数的时候才会被禁止掉
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern const void *free_irq(unsigned int, void *);
 extern void free_percpu_irq(unsigned int, void __percpu *);
 
@@ -232,10 +282,38 @@ extern void devm_free_irq(struct device *dev, unsigned int irq, void *dev_id);
 # define local_irq_enable_in_hardirq()	local_irq_enable()
 #endif
 
+/**
+ * @function: 禁止指定的中断
+ * @parameter: 
+ * 		 irq 就是要禁止的中断号
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 调用以后立即返回，不会等待当前中断处理程序执行完毕
+ */
 extern void disable_irq_nosync(unsigned int irq);
 extern bool disable_hardirq(unsigned int irq);
+
+/**
+ * @function: 禁止指定的中断
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 等到当前正在执行的中断处理函数执行完才返回
+ */
 extern void disable_irq(unsigned int irq);
 extern void disable_percpu_irq(unsigned int irq);
+
+/**
+ * @function: 使能指定的中断
+ * @parameter: 
+ * 		irq 就是要禁止的中断号
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void enable_irq(unsigned int irq);
 extern void enable_percpu_irq(unsigned int irq, unsigned int type);
 extern bool irq_percpu_is_enabled(unsigned int irq);
@@ -525,15 +603,16 @@ extern bool force_irqthreads;
 
 enum
 {
-	HI_SOFTIRQ=0,
-	TIMER_SOFTIRQ,
-	NET_TX_SOFTIRQ,
-	NET_RX_SOFTIRQ,
+	HI_SOFTIRQ=0,		/* 高优先级软中断 */
+	TIMER_SOFTIRQ,		/* 定时器软中断 */
+	NET_TX_SOFTIRQ,		/* 网络数据发送软中断 */
+	NET_RX_SOFTIRQ,		/* 网络数据接收软中断 */
 	BLOCK_SOFTIRQ,
 	IRQ_POLL_SOFTIRQ,
-	TASKLET_SOFTIRQ,
-	SCHED_SOFTIRQ,
-	HRTIMER_SOFTIRQ,
+	TASKLET_SOFTIRQ,		/* tasklet 软中断 */
+	SCHED_SOFTIRQ,			/* 调度软中断 */
+	HRTIMER_SOFTIRQ,		/* 高精度定时器软中断 */
+	/* RCU 软中断 */
 	RCU_SOFTIRQ,    /* Preferable RCU should always be the last softirq */
 
 	NR_SOFTIRQS
@@ -549,7 +628,7 @@ extern const char * const softirq_to_name[NR_SOFTIRQS];
 /* softirq mask and active fields moved to irq_cpustat_t in
  * asm/hardirq.h to get better cache usage.  KAO
  */
-
+/* 软中断 */
 struct softirq_action
 {
 	void	(*action)(struct softirq_action *);
@@ -567,11 +646,31 @@ static inline void do_softirq_own_stack(void)
 }
 #endif
 
+/**
+ * @function: 注册对应的软中断处理函数
+ * @parameter: 
+ * 		nr：要开启的软中断
+ * 		action：软中断对应的处理函数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void open_softirq(int nr, void (*action)(struct softirq_action *));
 extern void softirq_init(void);
 extern void __raise_softirq_irqoff(unsigned int nr);
 
 extern void raise_softirq_irqoff(unsigned int nr);
+
+/**
+ * @function: 触发
+ * @parameter: 
+ * 		nr：要触发的软中断
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void raise_softirq(unsigned int nr);
 
 DECLARE_PER_CPU(struct task_struct *, ksoftirqd);
