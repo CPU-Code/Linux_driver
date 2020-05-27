@@ -5,13 +5,6 @@ Linux驱动开发
 
 ## 文件说明
 
-text
-```mermaid
-graph LR;
-text
-C语言代码 --- 编译器:翻译 --> 机器指令:二进制;
-
-```
 
 inlcude： 
     Linux内核文件
@@ -90,6 +83,7 @@ uboot_include：
         fdt_support.c：chosen 节点的 bootargs 参数 生成
 
 code:
+
     1chrdevbase：
         字符驱动开发的模板
 
