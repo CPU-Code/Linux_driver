@@ -217,6 +217,7 @@
 	fsl,ext-reset-output;
 };
 
+/* 向 iomuxc 节点追加数据 */
 &iomuxc {
 	pinctrl_can_int: canint-grp {
 		fsl,pins = <

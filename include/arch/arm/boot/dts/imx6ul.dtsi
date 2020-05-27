@@ -1,3 +1,12 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-19 10:02:56
+ * @LastEditTime: 2020-05-20 12:26:21
+ * @FilePath: \Linux_driver\include\arch\arm\boot\dts\imx6ul.dtsi
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2015 Freescale Semiconductor, Inc.
@@ -15,6 +24,7 @@
 
 /* “ / ”是根节点，每个设备树文件只有一个根节点 */
 / {
+
 	/* #address-cells 和#size-cells 这两个属性可以用在任何拥有子节点的设备中，用于描述子节点的地址信息 
 	 * 表明了子节点应该如何编写 reg 属性值
 	 */
@@ -22,14 +32,18 @@
 	#address-cells = <1>;
 	/* #size-cells 属性值决定了子节点 reg 属性中长度信息所占的字长(32 位) */
 	#size-cells = <1>;
+
 	/*
 	 * The decompressor and also some bootloaders rely on a
 	 * pre-existing /chosen node to be available to insert the
 	 * command line and merge other ATAGS info.
 	 */
+	/* chosen 并不是一个真实的设备， chosen 节点主要是为了 uboot 向 Linux 内核传递数据 */
+	/* chosen中会被 uboot 添加 bootargs 参数 */
 	chosen {};
 
 	/* 根的子节点 */
+	/*  aliases 节点的主要功能就是定义别名，定义别名的目的就是为了方便访问节点 */
 	aliases {
 		ethernet0 = &fec1;
 		ethernet1 = &fec2;
@@ -65,7 +79,12 @@
 
 	/* 根的子节点 */
 	cpus {
+
+		/* name 属性用于记录节点名字 */
+
+		/*  cpus 的子节点 reg 属性中起始地址所占用的字长为 1 */
 		#address-cells = <1>;
+		/* 地址长度所占用的字长为 0 */
 		#size-cells = <0>;
 
 		/*  cpu0 这个设备节点信息，这个节点信息描述了I.MX6UL 这颗 SOC 所使用的 CPU 信息 */
@@ -86,8 +105,19 @@
 			 * 设置 compatible 属性的值为字符串“arm,cortex-a7” 
 			 */
 			compatible = "arm,cortex-a7";
+
+			/* 
+			 * 用于描述设备的 FCode，但是设备树没有 FCode，所以此属性也被抛弃了。
+			 *	此属性只能用于 cpu 节点或者 memory 节点 
+			 */
 			device_type = "cpu";
+
 			/* 设置 reg 属性的值为 0， reg 的值也可以设置为一组值 */
+			/* reg 一般用于描述设备地址空间资源信息 */
+			/* 
+			 *因为父节点设置了#addresscells = <1>， #size-cells = <0> 
+			 * 所以 addres=0，没有 length 的值，相当于设置了起始地址，而没有设置地址长度 
+			 */
 			reg = <0>;
 			clock-frequency = <696000000>;
 			clock-latency = <61036>; /* two CLK32 periods */
@@ -187,14 +217,22 @@
 
 	/* 根的子节点 */
 	soc {
+		/* #address-cells 表明 子节点 address 这个数据所占用的字长 */
+		/* #size-cells 表明 子节点 length 这个数据所占用的字长 */
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "simple-bus";
 		interrupt-parent = <&gpc>;
+
+		/* 如 ranges 属性值为空值，说明子地址空间和父地址空间完全相同，不需要进行地址转换 */
 		ranges;
 
 		ocram: sram@900000 {
 			compatible = "mmio-sram";
+			/*
+			 *起始地址： 0x00900000
+			 *地址长度：0x20000
+			 */
 			reg = <0x00900000 0x20000>;
 		};
 
@@ -732,6 +770,7 @@
 				interrupt-parent = <&intc>;
 			};
 
+			/* iomuxc 节点就是 I.MX6ULL 的 IOMUXC 外设对应的节点 */
 			iomuxc: iomuxc@20e0000 {
 				compatible = "fsl,imx6ul-iomuxc";
 				reg = <0x020e0000 0x4000>;
@@ -823,8 +862,15 @@
 				#size-cells = <1>;
 				reg = <0x2140000 0x3c000>;
 				/*
+				 *可以为空或者按照(child-bus-address,parent-bus-address,length)格式编写的数字矩阵， 
+				 * ranges 是一个地址映射/转换表， ranges 属性每个项目由子地址、父地址和 地址空间长度
 				 *
-				 *  
+				 * child-bus-address：子总线地址空间的物理地址，0X0
+				 *						由父节点的#address-cells 确定此物理地址所占用的字长
+				 * parent-bus-address：父总线地址空间的物理地址，0x2140000
+				 *						同样由父节点的#address-cells 确定此物理地址所占用的字长
+				 * length： 子地址空间的长度，0x3c000
+				 *			由父节点的#size-cells 确定此地址长度所占用的字长
 				 */
 				ranges = <0 0x2140000 0x3c000>;
 				interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
@@ -834,6 +880,8 @@
 
 				sec_jr0: jr0@1000 {
 					compatible = "fsl,sec-v4.0-job-ring";
+					/* 起始地址为 0x4600，寄存器长度为 0x100 */
+					/* 经过地址转换， serial 设备可以从 0x2141000 开始进行读写操作，0x2141000 = 0x1000 + 0x2140000 */
 					reg = <0x1000 0x1000>;
 					interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
 				};

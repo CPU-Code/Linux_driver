@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-19 10:02:56
- * @LastEditTime: 2020-05-19 10:34:09
+ * @LastEditTime: 2020-05-19 19:08:11
  * @FilePath: \Linux_driver\include\arch\arm\boot\dts\imx6ull.dtsi
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -25,7 +25,11 @@
 /* Delete CAAM node in AIPS-2 (i.MX6UL specific) */
 /delete-node/ &crypto;
 
+/* &cpu0 访问 cpu0 这个 label 所对应的节点 */
 &cpu0 {
+
+	/* 要追加或修改的内容 */
+	/* 属性“clock-frequency”就表示 cpu0 时钟为 900MHz */
 	clock-frequency = <900000000>;
 	operating-points = <
 		/* kHz	uV */
