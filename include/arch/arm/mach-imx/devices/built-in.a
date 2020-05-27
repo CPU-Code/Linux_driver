@@ -1,0 +1,45 @@
+!<thin>
+//                                              430       `
+devices.o/
+platform-fec.o/
+platform-flexcan.o/
+platform-fsl-usb2-udc.o/
+platform-gpio_keys.o/
+platform-gpio-mxc.o/
+platform-imx2-wdt.o/
+platform-imx-dma.o/
+platform-imx-fb.o/
+platform-imx-i2c.o/
+platform-imx-keypad.o/
+platform-imx-ssi.o/
+platform-imx-uart.o/
+platform-ipu-core.o/
+platform-mxc-ehci.o/
+platform-mxc-mmc.o/
+platform-mxc_nand.o/
+platform-mxc_rtc.o/
+platform-mxc_w1.o/
+platform-sdhci-esdhc-imx.o/
+platform-spi_imx.o/
+
+/0              0           0     0     644     3012      `
+/11             0           0     0     644     2424      `
+/27             0           0     0     644     2380      `
+/47             0           0     0     644     2520      `
+/72             0           0     0     644     1628      `
+/94             0           0     0     644     2212      `
+/115            0           0     0     644     1852      `
+/136            0           0     0     644     2492      `
+/156            0           0     0     644     2152      `
+/175            0           0     0     644     2616      `
+/195            0           0     0     644     2444      `
+/218            0           0     0     644     2152      `
+/238            0           0     0     644     2544      `
+/259            0           0     0     644     3724      `
+/280            0           0     0     644     2576      `
+/301            0           0     0     644     2512      `
+/321            0           0     0     644     2560      `
+/342            0           0     0     644     2456      `
+/362            0           0     0     644     1820      `
+/381            0           0     0     644     2612      `
+/409            0           0     0     644     2596      `
