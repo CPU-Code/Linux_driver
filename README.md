@@ -32,6 +32,9 @@ inlcude：
             spinlock_types.h
             spinlock.h
             timer.h
+            interrupt.h 中断操作
+            irqflags.h 中断操作
+            irqreturn.h
 
         asm-generic:
 
@@ -104,6 +107,17 @@ code:
     8atomic:
 
     9spinlock:
+
+    10
+
+    11
+
+    12
+
+    13
+
+    14irq：
+        中断实验
 
 ## 使用说明
 
