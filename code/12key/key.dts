@@ -1,0 +1,35 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-26 10:38:02
+ * @LastEditTime: 2020-05-26 10:41:27
+ * @FilePath: \Linux_driver\code\12key\key.dts
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
+&iomuxc
+{
+    pinctrl_key: keygrp
+    {
+        fsl,pins = <
+            /* 将 GPIO_IO18 这个 PIN 复用为 GPIO1_IO18 */
+            MX6UL_PAD_UART1_CTS_B__GPIO1_IO18   0xF080 /* KEY0 */
+        >;
+    };
+};
+
+/{
+    key
+    {
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        compatible = "gpio-key";
+        pinctrl-names = "default";
+        /* 设置 KEY 所使用的 PIN 对应的 pinctrl 节点 */
+        pinctrl-0 = <&pinctrl_key>;
+        /* 指定了 KEY 所使用的 GPIO */
+        key-gpio = <&gpio1 18 GPIO_ACTIVE_LOW>; /* KEY0 */
+        status = "okay";
+    };
+};

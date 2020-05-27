@@ -1,0 +1,120 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-19 20:43:14
+ * @LastEditTime: 2020-05-19 21:37:32
+ * @FilePath: \Linux_driver\4mydts\mydts.dts
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
+/*
+ *cd proc/devicetree/
+ * cat model
+ * cat compatible
+ */
+ 
+ // 根节点
+ / {
+     // compatible 属性
+     compatible = "厂家,板子名字", "厂家,板子名字";
+
+     cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        // 一个 CPU，因此只有一个cpu0 节点
+        //CPU0 子节点
+        cpu0: cpu@0
+        {
+            // Cortex-A7 架构
+            compatible = "arm,cortex-a7";
+            device_type = "cpu";
+            reg = <0>;
+        };
+     };
+
+     //soc 节点
+     soc
+     {
+         //设置#address-cells = <1>， #size-cells = <1>，
+         //这样 soc 子节点的 reg 属性中起始地占用一个字长，地址空间长度也占用一个字长
+         #address-cells = <1>;
+         #size-cells = <1>;
+
+         compatible = "simple-bus";
+
+         // ranges 属性为空，说明子空间和父空间地址范围相同
+         ranges;
+
+         //ocram 节点
+         //@后面的 0x00900000 就是 ocram 的起始地址
+         ocram: sram@00900000
+         {
+             compatible = "fsl,lpm-sram";
+             //ocram 起始地址为 0x00900000，大小为 128KB(0x20000)
+             reg = <0x00900000 0x20000>;
+         };
+
+         //aips1 节点
+         aips1: aips-bus@02000000
+         {
+             compatible = "fsl,aips-bus", "simple-bus";
+             #address-cells = <1>;
+             #size-cells = <1>;
+
+             reg = <0x02000000 0x100000>;
+             ranges;
+
+             //ecspi1 节点
+             ecspi1: ecspi@02008000
+             {
+                 #address-cells = <1>;
+                 #size-cells = <0>;
+
+                 compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
+                 reg = <0x02008000 0x4000>;
+                 status = "disabled";
+             };
+         };
+
+         //aips2 节点
+         aips2: aips-bus@02100000
+         {
+            compatible = "fsl,aips-bus", "simple-bus";
+            
+            #address-cells = <1>;
+            #size-cells = <1>;
+
+            reg = <0x02100000 0x100000>;
+            ranges;
+
+            //usbotg1 节点
+            usbotg1: usb@02184000
+            {
+                compatible = "fsl,imx6ul-usb", "fsl,imx27-usb";
+
+                reg = <0x02184000 0x200>;
+                status = "disabled";
+            };
+         };
+
+         //aips3 节点
+         aips3: aips-bus@02200000
+         {
+             compatible = "fsl,aips-bus", "simple-bus";
+             
+             #address-cells = <1>;
+             #size-cells = <1>;
+
+             reg = <0x02200000 0x100000>;
+             ranges;
+
+             //rngb 节点
+             rngb: rngb@02284000
+             {
+                 compatible = "fsl,imx6sl-rng", "fsl,imx-rng", "imxrng";
+                 reg = <0x02284000 0x4000>;
+             };
+         };
+     };
+ };

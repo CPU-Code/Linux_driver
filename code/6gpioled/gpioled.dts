@@ -1,0 +1,40 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-20 15:42:19
+ * @LastEditTime: 2020-05-20 17:04:10
+ * @FilePath: \Linux_driver\6gpioled\gpioled.dts
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+
+/* 一个引脚一次只能实现一个功能 */
+/* 检查 PIN 是否被其他外设使用 */
+/* 检查 pinctrl 设置 */
+/* 如 这个 PIN 配置为 GPIO 的话，检查这个 GPIO 有没有被别的外设使用 */
+&iomuxc
+{
+    pinctrl_led: ledgrp
+    {
+        fsl,pins = <
+            /* 将 GPIO1_IO03 这个 PIN 复用为 GPIO1_IO03，电气属性值为 0X10B0 */
+            MX6UL_PAD_GPIO1_IO03__GPIO1_IO03    0x10B0  /* LED0 */
+        >;
+    };
+};
+
+/{
+    gpioled
+    {
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        compatible = "gpio-led";
+        pinctrl-names = "default";
+        /* pinctrl-0 属性设置 LED 灯所使用的 PIN 对应的 pinctrl 节点 */
+        pinctrl-0 = <&pinctrl_led>;
+        /* led-gpio 属性指定了 LED 灯所使用的 GPIO，在这里就是 GPIO1 的 IO03，低电平有效 */
+        led-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
+
+        status = "okay";
+    };
+};

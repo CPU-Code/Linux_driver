@@ -1,0 +1,41 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-23 22:55:17
+ * @LastEditTime: 2020-05-23 23:07:58
+ * @FilePath: \Linux_driver\7beep\beep.dts
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */
+
+/* “ make dtbs”命令重新编译设备树，然后使用新编译出来的xxx.dtb 文件启动 Linux 系统 */
+/* 启动成功以后进入“/proc/device-tree”目录中查看“beep”节点是否存在 */
+
+/{
+    beep
+    {
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        compatible = "cpucode-beep";
+        pinctrl-names = "default";
+        /* pinctrl-0 属性设置蜂鸣器所使用的 PIN 对应的 pinctrl 节点 */
+        pinctrl-0 = <&pinctrl_beep>;
+        /* beep-gpio 属性指定了蜂鸣器所使用的 GPIO */
+        beep-gpio = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
+
+};
+
+/* 使用的 PIN 为 SNVS_TAMPER1，因此先检查 PIN 为 SNVS_TAMPER1 这个 PIN 有没有被其他的 pinctrl 节点使用 */
+&iomuxc
+{
+    pinctrl_beep:beepgrp
+    {
+        fsl,pings = <
+            /* 定义在 arch/arm/boot/dts/imx6ull-pinfunc-snvs.h 文件中 */
+            /* 将 SNVS_TAMPER1 这个PIN 复用为 GPIO5_IO01 */
+            MX6ULL_PAD_SNVS_TAMPER1__GPIO5_IO01     0x10B0      /* beep */
+        >;
+    };
+}
