@@ -50,6 +50,7 @@ struct ww_acquire_ctx;
  * - detects multi-task circular deadlocks and prints out all affected
  *   locks and tasks (and only those tasks)
  */
+/* 互斥体 */
 struct mutex {
 	atomic_long_t		owner;
 	spinlock_t		wait_lock;
@@ -101,6 +102,14 @@ static inline void mutex_destroy(struct mutex *lock) {}
  *
  * It is not allowed to initialize an already locked mutex.
  */
+/**
+ * @function: 初始化 mutex
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define mutex_init(mutex)						\
 do {									\
 	static struct lock_class_key __key;				\
@@ -122,6 +131,14 @@ do {									\
 		__DEBUG_MUTEX_INITIALIZER(lockname) \
 		__DEP_MAP_MUTEX_INITIALIZER(lockname) }
 
+/**
+ * @function: 定义并初始化一个 mutex 变量
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define DEFINE_MUTEX(mutexname) \
 	struct mutex mutexname = __MUTEX_INITIALIZER(mutexname)
 
@@ -133,6 +150,14 @@ extern void __mutex_init(struct mutex *lock, const char *name,
  * @lock: the mutex to be queried
  *
  * Returns true if the mutex is locked, false if unlocked.
+ */
+/**
+ * @function: 判断 mutex 是否被获取
+ * @parameter: 
+ * @return: 
+ *     success: 1
+ *     error: 0
+ * @note: 
  */
 extern bool mutex_is_locked(struct mutex *lock);
 
@@ -162,7 +187,25 @@ do {									\
 } while (0)
 
 #else
+
+/**
+ * @function: 获取 mutex，也就是给 mutex 上锁。如 获取不到就进休眠
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void mutex_lock(struct mutex *lock);
+
+/**
+ * @function: 获取信号量失败进入休眠,以后可以被信号打断
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern int __must_check mutex_lock_interruptible(struct mutex *lock);
 extern int __must_check mutex_lock_killable(struct mutex *lock);
 extern void mutex_lock_io(struct mutex *lock);
@@ -180,7 +223,24 @@ extern void mutex_lock_io(struct mutex *lock);
  *
  * Returns 1 if the mutex has been acquired successfully, and 0 on contention.
  */
+/**
+ * @function: 尝试获取 mutex
+ * @parameter: 
+ * @return: 
+ *     success: 1
+ *     error: 0
+ * @note: 
+ */
 extern int mutex_trylock(struct mutex *lock);
+
+/**
+ * @function: 释放 mutex，也就给 mutex 解锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void mutex_unlock(struct mutex *lock);
 
 extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);

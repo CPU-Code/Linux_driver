@@ -113,6 +113,16 @@ static inline bool gpio_is_valid(int number)
 	return false;
 }
 
+/**
+ * @function: 申请一个 GPIO 管脚
+ * @parameter: 
+ * 		gpio：要申请的 gpio 标号，使用 of_get_named_gpio 函数从设备树获取指定 GPIO 属性信息
+ * 		label：给 gpio 设置个名字
+ * @return: 
+ *     success: 0
+ *     error: 其他
+ * @note: 
+ */
 static inline int gpio_request(unsigned gpio, const char *label)
 {
 	return -ENOSYS;
@@ -129,6 +139,15 @@ static inline int gpio_request_array(const struct gpio *array, size_t num)
 	return -ENOSYS;
 }
 
+/**
+ * @function: 释放
+ * @parameter: 
+ * 		gpio：要释放的 gpio 标号
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void gpio_free(unsigned gpio)
 {
 	might_sleep();
@@ -145,11 +164,30 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
 	WARN_ON(1);
 }
 
+/**
+ * @function: 设置某个 GPIO 为输入
+ * @parameter: 
+ * 		gpio：要设置为输入的 GPIO 标号
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 static inline int gpio_direction_input(unsigned gpio)
 {
 	return -ENOSYS;
 }
 
+/**
+ * @function: 设置某个 GPIO 为输出，并 设置默认输出值，
+ * @parameter: 
+ * 		gpio：要设置为输出的 GPIO 标号
+ * 		value： GPIO 默认输出值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 static inline int gpio_direction_output(unsigned gpio, int value)
 {
 	return -ENOSYS;

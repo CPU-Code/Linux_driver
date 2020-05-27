@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:30
+ * @LastEditTime: 2020-05-20 11:10:38
+ * @FilePath: \Linux_driver\include\include\asm-generic\gpio.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _ASM_GENERIC_GPIO_H
 #define _ASM_GENERIC_GPIO_H
@@ -64,13 +72,54 @@ static inline struct gpio_chip *gpio_to_chip(unsigned gpio)
 /* Always use the library code for GPIO management calls,
  * or when sleeping may be involved.
  */
+/**
+ * @function: 申请一个 GPIO 管脚
+ * @parameter: 
+ * 		gpio: 要申请的 gpio 标号，使用 of_get_named_gpio 函数从设备树获取指定 GPIO 属性信息，
+ * 				此函数会返回这个 GPIO 的标号
+ * 		label：给 gpio 设置个名字
+ * @return: 
+ *     success: 0
+ *     error: 其他
+ * @note: 
+ */
 extern int gpio_request(unsigned gpio, const char *label);
+
+/**
+ * @function: 释放
+ * @parameter: 
+ * 		gpio：要释放的 gpio 标号
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void gpio_free(unsigned gpio);
 
+/**
+ * @function: 设置某个 GPIO 为输入
+ * @parameter: 
+ * 		gpio：要设置为输入的 GPIO 标号
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 static inline int gpio_direction_input(unsigned gpio)
 {
 	return gpiod_direction_input(gpio_to_desc(gpio));
 }
+
+/**
+ * @function: 设置某个 GPIO 为输出，并且设置默认输出值
+ * @parameter: 
+ * 		gpio：要设置为输出的 GPIO 标号
+ * 		value： GPIO 默认输出值
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 static inline int gpio_direction_output(unsigned gpio, int value)
 {
 	return gpiod_direction_output_raw(gpio_to_desc(gpio), value);
@@ -95,10 +144,30 @@ static inline void gpio_set_value_cansleep(unsigned gpio, int value)
  * the GPIO is constant and refers to some always-present controller,
  * giving direct access to chip registers and tight bitbanging loops.
  */
+/**
+ * @function: 获取某个 GPIO 的值(0 或 1)
+ * @parameter: 
+ * 		gpio：要获取的 GPIO 标号
+ * @return: 
+ *     success: 非负值，得到的 GPIO 值
+ *     error: 负值
+ * @note: 
+ */
 static inline int __gpio_get_value(unsigned gpio)
 {
 	return gpiod_get_raw_value(gpio_to_desc(gpio));
 }
+
+/**
+ * @function: 设置某个 GPIO 的值
+ * @parameter: 
+ * 		gpio：要设置的 GPIO 标号
+ * 		value： 要设置的值
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void __gpio_set_value(unsigned gpio, int value)
 {
 	return gpiod_set_raw_value(gpio_to_desc(gpio), value);

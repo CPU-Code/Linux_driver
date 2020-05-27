@@ -24,6 +24,15 @@ do {								\
 	__rwlock_init((lock), #lock, &__key);			\
 } while (0)
 #else
+
+/**
+ * @function: 初始化读写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 # define rwlock_init(lock)					\
 	do { *(lock) = __RW_LOCK_UNLOCKED(lock); } while (0)
 #endif
@@ -67,7 +76,24 @@ do {								\
 #define read_trylock(lock)	__cond_lock(lock, _raw_read_trylock(lock))
 #define write_trylock(lock)	__cond_lock(lock, _raw_write_trylock(lock))
 
+/**
+ * @function: 获取写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_lock(lock)	_raw_write_lock(lock)
+
+/**
+ * @function: 获取读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_lock(lock)		_raw_read_lock(lock)
 
 #if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
@@ -85,11 +111,28 @@ do {								\
 
 #else
 
+/**
+ * @function: 保存中断状态，禁止本地中断，并获取读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_lock_irqsave(lock, flags)			\
 	do {						\
 		typecheck(unsigned long, flags);	\
 		_raw_read_lock_irqsave(lock, flags);	\
 	} while (0)
+
+/**
+ * @function: 保存中断状态，禁止本地中断，并获取写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_lock_irqsave(lock, flags)			\
 	do {						\
 		typecheck(unsigned long, flags);	\
@@ -98,27 +141,132 @@ do {								\
 
 #endif
 
+/**
+ * @function: 禁止本地中断，并且获取读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_lock_irq(lock)		_raw_read_lock_irq(lock)
+
+/**
+ * @function: 关闭下半部，并获取读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_lock_bh(lock)		_raw_read_lock_bh(lock)
+
+/**
+ * @function: 禁止本地中断，并且获取写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_lock_irq(lock)		_raw_write_lock_irq(lock)
+
+/**
+ * @function: 关闭下半部，并获取读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_lock_bh(lock)		_raw_write_lock_bh(lock)
+
+/**
+ * @function: 释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_unlock(lock)		_raw_read_unlock(lock)
+
+/**
+ * @function: 释放写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_unlock(lock)		_raw_write_unlock(lock)
+
+/**
+ * @function: 打开本地中断，并且释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_unlock_irq(lock)		_raw_read_unlock_irq(lock)
+
+/**
+ * @function: 打开本地中断，并且释放写锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_unlock_irq(lock)		_raw_write_unlock_irq(lock)
 
+/**
+ * @function: 将中断状态恢复到以前的状态，并且激活本地中断，释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_unlock_irqrestore(lock, flags)			\
 	do {							\
 		typecheck(unsigned long, flags);		\
 		_raw_read_unlock_irqrestore(lock, flags);	\
 	} while (0)
+
+/**
+ * @function: 打开下半部，并释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define read_unlock_bh(lock)		_raw_read_unlock_bh(lock)
 
+/**
+ * @function: 将中断状态恢复到以前的状态，并且激活本地中断，释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_unlock_irqrestore(lock, flags)		\
 	do {						\
 		typecheck(unsigned long, flags);	\
 		_raw_write_unlock_irqrestore(lock, flags);	\
 	} while (0)
+
+/**
+ * @function: 打开下半部，并释放读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_unlock_bh(lock)		_raw_write_unlock_bh(lock)
 
 #define write_trylock_irqsave(lock, flags) \

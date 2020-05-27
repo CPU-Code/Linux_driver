@@ -168,11 +168,14 @@ typedef phys_addr_t resource_size_t;
  */
 typedef unsigned long irq_hw_number_t;
 
+/* 完成整形数据的原子操作 */
 typedef struct {
 	int counter;
 } atomic_t;
 
 #ifdef CONFIG_64BIT
+
+/* 64 位的原子变量 */
 typedef struct {
 	s64 counter;
 } atomic64_t;

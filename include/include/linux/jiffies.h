@@ -77,6 +77,9 @@ extern int register_refined_jiffies(long clock_tick_rate);
  * without sampling the sequence number in jiffies_lock.
  * get_jiffies_64() will do this for you as appropriate.
  */
+/* 全局变量 jiffies 来记录系统从启动以来的系统节拍数 */
+/*  jiffies/HZ 就是系统运行时间，单位为秒 */
+/* 64 位的 jiffies_64 */
 extern u64 __cacheline_aligned_in_smp jiffies_64;
 extern unsigned long volatile __cacheline_aligned_in_smp __jiffy_arch_data jiffies;
 
@@ -102,16 +105,50 @@ static inline u64 get_jiffies_64(void)
  * good compiler would generate better code (and a really good compiler
  * wouldn't care). Gcc is currently neither.
  */
+/**
+ * @function: 如 a > b，返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define time_after(a,b)		\
 	(typecheck(unsigned long, a) && \
 	 typecheck(unsigned long, b) && \
 	 ((long)((b) - (a)) < 0))
+
+/**
+ * @function: 如 a < b 的话, 返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */	 
 #define time_before(a,b)	time_after(b,a)
 
+/**
+ * @function: 如  a >= b 的话，返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define time_after_eq(a,b)	\
 	(typecheck(unsigned long, a) && \
 	 typecheck(unsigned long, b) && \
 	 ((long)((a) - (b)) >= 0))
+
+/**
+ * @function: 如 a <= b 的话, 返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define time_before_eq(a,b)	time_after_eq(b,a)
 
 /*
@@ -288,9 +325,34 @@ extern unsigned long preset_lpj;
 /*
  * Convert various time units to each other:
  */
+/**
+ * @function: 将 jiffies 类型的参数 j 分别转换为对应的毫秒
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern unsigned int jiffies_to_msecs(const unsigned long j);
+
+/**
+ * @function: 将 jiffies 类型的参数 j 分别转换为对应的微秒
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern unsigned int jiffies_to_usecs(const unsigned long j);
 
+/**
+ * @function: 将 jiffies 类型的参数 j 分别转换为对应的纳秒
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline u64 jiffies_to_nsecs(const unsigned long j)
 {
 	return (u64)jiffies_to_usecs(j) * NSEC_PER_USEC;
@@ -361,6 +423,14 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
  * directly here and from __msecs_to_jiffies() in the case where
  * constant folding is not possible.
  */
+/**
+ * @function: 将毫秒转换为 jiffies 类型
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
 {
 	if (__builtin_constant_p(m)) {
@@ -371,6 +441,7 @@ static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
 		return __msecs_to_jiffies(m);
 	}
 }
+
 
 extern unsigned long __usecs_to_jiffies(const unsigned int u);
 #if !(USEC_PER_SEC % HZ)
@@ -407,6 +478,14 @@ static inline unsigned long _usecs_to_jiffies(const unsigned int u)
  * the HZ range specific helpers _usecs_to_jiffies() are called both
  * directly here and from __msecs_to_jiffies() in the case where
  * constant folding is not possible.
+ */
+/**
+ * @function: 将微秒转换为 jiffies 类型
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 static __always_inline unsigned long usecs_to_jiffies(const unsigned int u)
 {
@@ -457,6 +536,15 @@ extern unsigned long clock_t_to_jiffies(unsigned long x);
 extern u64 jiffies_64_to_clock_t(u64 x);
 extern u64 nsec_to_clock_t(u64 x);
 extern u64 nsecs_to_jiffies64(u64 n);
+
+/**
+ * @function: 将纳秒转换为 jiffies 类型
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern unsigned long nsecs_to_jiffies(u64 n);
 
 #define TIMESTAMP_SIZE	30

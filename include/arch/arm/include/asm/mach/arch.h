@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:48:08
+ * @LastEditTime: 2020-05-19 17:46:23
+ * @FilePath: \Linux_driver\include\arch\arm\include\asm\mach\arch.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  *  arch/arm/include/asm/mach/arch.h
@@ -92,6 +100,7 @@ static const struct machine_desc __mach_desc_##_type	\
 static const struct machine_desc __mach_desc_##_name	\
  __used							\
  __attribute__((__section__(".arch.info.init"))) = {	\
+	/* 将.nr 设置为~0，说明引入设备树以后不会再根据 machine id 来检查 Linux 内核是否支持某个设备 */
 	.nr		= ~0,				\
 	.name		= _namestr,
 

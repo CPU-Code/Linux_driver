@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:45
+ * @LastEditTime: 2020-05-19 22:23:02
+ * @FilePath: \Linux_driver\include\include\linux\device.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 // SPDX-License-Identifier: GPL-2.0
 /*
  * device.h - generic, centralized driver model

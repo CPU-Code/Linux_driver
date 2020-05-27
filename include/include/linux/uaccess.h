@@ -137,6 +137,17 @@ extern __must_check unsigned long
 _copy_to_user(void __user *, const void *, unsigned long);
 #endif
 
+/**
+ * @function:  将用户空间的数据复制form  到 to 这个内核空间中
+ * @parameter: 
+ * 		to：内核数据
+ * 		form：用户数据
+ * 		n：复制的数据长度
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline unsigned long __must_check
 copy_from_user(void *to, const void __user *from, unsigned long n)
 {
@@ -145,6 +156,17 @@ copy_from_user(void *to, const void __user *from, unsigned long n)
 	return n;
 }
 
+/**
+ * @function: 内核空间的数据from 到 用户空间的复制 to
+ * @parameter: 
+ * 		 to : 目的
+ * 		 from ：源
+ * 		 n ：复制的数据长度
+ * @return: 
+ *     success: 0
+ *     error: 负数
+ * @note: 
+ */
 static __always_inline unsigned long __must_check
 copy_to_user(void __user *to, const void *from, unsigned long n)
 {

@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:47
+ * @LastEditTime: 2020-05-24 17:34:24
+ * @FilePath: \Linux_driver\include\include\linux\kdev_t.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _LINUX_KDEV_T_H
 #define _LINUX_KDEV_T_H
@@ -7,8 +15,14 @@
 #define MINORBITS	20
 #define MINORMASK	((1U << MINORBITS) - 1)
 
+
+/* 获取分配号的主设备号 */
 #define MAJOR(dev)	((unsigned int) ((dev) >> MINORBITS))
+
+/* 获取分配号的次设备号 */
 #define MINOR(dev)	((unsigned int) ((dev) & MINORMASK))
+
+//将给定的主设备号和次设备号的值组合成 dev_t 类型的设备号
 #define MKDEV(ma,mi)	(((ma) << MINORBITS) | (mi))
 
 #define print_dev_t(buffer, dev)					\

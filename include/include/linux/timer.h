@@ -8,14 +8,22 @@
 #include <linux/debugobjects.h>
 #include <linux/stringify.h>
 
+/**
+ * @function: 内核定时器
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 一个周期为 2 秒的定时器， expires=jiffies+(2*HZ)
+ */
 struct timer_list {
 	/*
 	 * All fields that change during normal runtime grouped to the
 	 * same cacheline
 	 */
 	struct hlist_node	entry;
-	unsigned long		expires;
-	void			(*function)(struct timer_list *);
+	unsigned long		expires;	/* 定时器超时时间，单位是节拍数 */
+	void			(*function)(struct timer_list *);	/* 定时处理函数 */
 	u32			flags;
 
 #ifdef CONFIG_LOCKDEP
@@ -168,7 +176,28 @@ static inline int timer_pending(const struct timer_list * timer)
 }
 
 extern void add_timer_on(struct timer_list *timer, int cpu);
+
+/**
+ * @function: 删除一个定时器
+ * @parameter: 
+ * 		timer：要删除的定时器
+ * @return: 
+ *     success: 
+ *     error:
+ * @note:  0，定时器还没被激活； 1，定时器已经激活
+ */
 extern int del_timer(struct timer_list * timer);
+
+/**
+ * @function: 修改定时值，如 定时器还没有激活的话，会激活定时器
+ * @parameter: 
+ * 		timer：要修改超时时间(定时值)的定时器
+ * 		expires：修改后的超时时间
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 0，调用 mod_timer 函数前定时器未被激活； 1，调用 mod_timer 函数前定时器已被激活
+ */
 extern int mod_timer(struct timer_list *timer, unsigned long expires);
 extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
 extern int timer_reduce(struct timer_list *timer, unsigned long expires);
@@ -179,6 +208,15 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
  */
 #define NEXT_TIMER_MAX_DELTA	((1UL << 30) - 1)
 
+/**
+ * @function: 向 Linux 内核注册定时器
+ * @parameter: 
+ * 		timer：要注册的定时器
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void add_timer(struct timer_list *timer);
 
 extern int try_to_del_timer_sync(struct timer_list *timer);
@@ -186,6 +224,16 @@ extern int try_to_del_timer_sync(struct timer_list *timer);
 #if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
   extern int del_timer_sync(struct timer_list *timer);
 #else
+
+/**
+ * @function: 等待其他处理器使用完定时器再删除， 不能使用在中断上下文中
+ * @parameter: 
+ * 		t：要删除的定时器
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 0，定时器还没被激活； 1，定时器已经激活
+ */
 # define del_timer_sync(t)		del_timer(t)
 #endif
 

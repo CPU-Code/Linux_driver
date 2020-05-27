@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:48:08
+ * @LastEditTime: 2020-05-24 17:34:38
+ * @FilePath: \Linux_driver\include\arch\arm\include\asm\atomic.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  *  arch/arm/include/asm/atomic.h
@@ -15,6 +23,14 @@
 #include <asm/barrier.h>
 #include <asm/cmpxchg.h>
 
+/**
+ * @function: 定义原子变量的时候对其初始化
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define ATOMIC_INIT(i)	{ (i) }
 
 #ifdef __KERNEL__

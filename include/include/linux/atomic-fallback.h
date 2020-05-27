@@ -262,6 +262,15 @@ atomic_fetch_sub(int i, atomic_t *v)
 #endif /* atomic_fetch_sub_relaxed */
 
 #ifndef atomic_inc
+
+/**
+ * @function: 给 v 加 1，也就是自增
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void
 atomic_inc(atomic_t *v)
 {
@@ -278,6 +287,15 @@ atomic_inc(atomic_t *v)
 #endif /* atomic_inc_return */
 
 #ifndef atomic_inc_return
+
+/**
+ * @function: 给 v 加 1，并且返回 v 的值
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline int
 atomic_inc_return(atomic_t *v)
 {
@@ -337,6 +355,15 @@ atomic_inc_return_release(atomic_t *v)
 #endif
 
 #ifndef atomic_inc_return
+
+/**
+ * @function: 给 v 加 1，并且返回 v 的值
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline int
 atomic_inc_return(atomic_t *v)
 {
@@ -433,6 +460,15 @@ atomic_fetch_inc(atomic_t *v)
 #endif /* atomic_fetch_inc_relaxed */
 
 #ifndef atomic_dec
+
+/**
+ * @function: 从 v 减 1，也就是自减
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void
 atomic_dec(atomic_t *v)
 {
@@ -449,6 +485,15 @@ atomic_dec(atomic_t *v)
 #endif /* atomic_dec_return */
 
 #ifndef atomic_dec_return
+
+/**
+ * @function: 从 v 减 1，并且返回 v 的值
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline int
 atomic_dec_return(atomic_t *v)
 {
@@ -508,6 +553,15 @@ atomic_dec_return_release(atomic_t *v)
 #endif
 
 #ifndef atomic_dec_return
+
+/**
+ * @function: 从 v 减 1，并且返回 v 的值
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline int
 atomic_dec_return(atomic_t *v)
 {
@@ -1010,6 +1064,15 @@ atomic_try_cmpxchg(atomic_t *v, int *old, int new)
  * true if the result is zero, or false for all
  * other cases.
  */
+
+/**
+ * @function: 从 v 减 i，如果结果为 0 就返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline bool
 atomic_sub_and_test(int i, atomic_t *v)
 {
@@ -1026,6 +1089,15 @@ atomic_sub_and_test(int i, atomic_t *v)
  * Atomically decrements @v by 1 and
  * returns true if the result is 0, or false for all other
  * cases.
+ */
+
+/**
+ * @function: 从 v 减 1，如果结果为 0 就返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 static inline bool
 atomic_dec_and_test(atomic_t *v)
@@ -1044,6 +1116,15 @@ atomic_dec_and_test(atomic_t *v)
  * and returns true if the result is zero, or false for all
  * other cases.
  */
+
+/**
+ * @function: 给 v 加 1，如果结果为 0 就返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline bool
 atomic_inc_and_test(atomic_t *v)
 {
@@ -1061,6 +1142,15 @@ atomic_inc_and_test(atomic_t *v)
  * Atomically adds @i to @v and returns true
  * if the result is negative, or false when
  * result is greater than or equal to zero.
+ */
+
+/**
+ * @function: 给 v 加 i，如果结果为负就返回真，否则返回假
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 static inline bool
 atomic_add_negative(int i, atomic_t *v)

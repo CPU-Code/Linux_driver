@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:46
+ * @LastEditTime: 2020-05-19 22:18:52
+ * @FilePath: \Linux_driver\include\include\linux\fs.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _LINUX_FS_H
 #define _LINUX_FS_H
@@ -2665,8 +2673,33 @@ static inline void bd_unlink_disk_holder(struct block_device *bdev,
 #define CHRDEV_MAJOR_DYN_EXT_START 511
 #define CHRDEV_MAJOR_DYN_EXT_END 384
 
+/**
+ * @function:  申请设备号 
+ * @parameter: 
+ *      dev_t：保存申请到的设备号
+ *      unsigned：次设备号起始地址
+ *      unsigned：要申请的设备号数量
+ *      char：设备名字
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern int alloc_chrdev_region(dev_t *, unsigned, unsigned, const char *);
+
+/**
+ * @function: 注册设备号
+ * @parameter: 
+ *      dev_t：要申请的起始设备号，也就是给定的设备号
+ *      unsigned： 要申请的数量
+ *      char：设备名字
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern int register_chrdev_region(dev_t, unsigned, const char *);
+
 extern int __register_chrdev(unsigned int major, unsigned int baseminor,
 			     unsigned int count, const char *name,
 			     const struct file_operations *fops);
@@ -2676,8 +2709,8 @@ extern void __unregister_chrdev(unsigned int major, unsigned int baseminor,
 /**
  * @function: 注销设备号
  * @parameter: 
- *      newchrled.devid：要释放的设备号
- *      NEWCHRLED_CNT： NEWCHRLED_CNT
+ *      dev_t：要释放的设备号
+ *      unsigned： 数量
  * @return: 
  *     success: 
  *     error:

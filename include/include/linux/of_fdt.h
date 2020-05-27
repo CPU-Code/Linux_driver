@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:59
+ * @LastEditTime: 2020-05-19 18:45:42
+ * @FilePath: \Linux_driver\include\include\linux\of_fdt.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Definitions for working with the Flattened Device Tree data format

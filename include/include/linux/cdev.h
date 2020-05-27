@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:41:44
- * @LastEditTime: 2020-05-18 10:51:23
+ * @LastEditTime: 2020-05-19 22:25:16
  * @FilePath: \Linux_driver\include\include\linux\cdev.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -19,15 +19,14 @@ struct file_operations;
 struct inode;
 struct module;
 
-struct cdev {
-	struct kobject kobj;
-	struct module *owner;
-	/* 字符设备文件操作函数集合 */
-	const struct file_operations *ops;
-	struct list_head list;
-	/* 设备号 */
-	dev_t dev;
-	unsigned int count;
+struct cdev 
+{
+	struct kobject 				 kobj;
+	struct module 				 *owner;
+	const struct file_operations *ops;		/* 字符设备文件操作函数集合 */
+	struct list_head 			 list;
+	dev_t 						 dev;		/* 设备号 */
+	unsigned int 				 count;
 } __randomize_layout;
 
 /**

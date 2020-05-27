@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:59
+ * @LastEditTime: 2020-05-20 11:18:43
+ * @FilePath: \Linux_driver\include\include\linux\of_gpio.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0+ */
 /*
  * OF helpers for the GPIO API
@@ -95,6 +103,17 @@ static inline int of_get_named_gpio_flags(struct device_node *np,
  * The above example defines four GPIOs, two of which are not specified.
  * This function will return '4'
  */
+
+/**
+ * @function: 获取设备树某个属性里面定义了几个 GPIO 信息，空的 GPIO 信息也会被统计到
+ * @parameter: 
+ * 		np：设备节点
+ * 		propname：要统计的 GPIO 属性
+ * @return: 
+ *     success: 正值，统计到的 GPIO 数量
+ *     error: 负值
+ * @note: 
+ */
 static inline int of_gpio_named_count(struct device_node *np, const char* propname)
 {
 	return of_count_phandle_with_args(np, propname, "#gpio-cells");
@@ -105,6 +124,15 @@ static inline int of_gpio_named_count(struct device_node *np, const char* propna
  * @np:		device node to count GPIOs for
  *
  * Same as of_gpio_named_count, but hard coded to use the 'gpios' property
+ */
+/**
+ * @function: 统计的是“gpios”这个属性的 GPIO 数量
+ * @parameter: 
+ * 		np：设备节点
+ * @return: 
+ *     success: 正值，统计到的 GPIO 数量
+ *     error: 负值
+ * @note: 
  */
 static inline int of_gpio_count(struct device_node *np)
 {
@@ -124,7 +152,18 @@ static inline int of_get_gpio_flags(struct device_node *np, int index,
  * @index:	index of the GPIO
  *
  * Returns GPIO number to use with Linux generic GPIO API, or one of the errno
- * value on the error condition.
+ * value on the error condition.*
+ */
+/**
+ * @function: 获取 GPIO 编号
+ * @parameter: 
+ * 		np：设备节点
+ * 		propname：包含要获取 GPIO 信息的属性名
+ * 		index： GPIO 索引，如 只有一个 GPIO 信息的话此参数为 0
+ * @return: 
+ *     success: 正值，获取到的 GPIO 编号
+ *     error:
+ * @note: 负值
  */
 static inline int of_get_named_gpio(struct device_node *np,
                                    const char *propname, int index)

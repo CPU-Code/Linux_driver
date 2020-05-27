@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:30
+ * @LastEditTime: 2020-05-24 17:33:54
+ * @FilePath: \Linux_driver\include\include\asm-generic\atomic.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Generic C implementation of atomic counter operations. Usable on
@@ -159,6 +167,14 @@ ATOMIC_OP(xor, ^)
  * resource counting etc..
  */
 
+/**
+ * @function: 定义原子变量的时候对其初始化
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define ATOMIC_INIT(i)	{ (i) }
 
 /**

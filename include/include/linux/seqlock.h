@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:42:03
+ * @LastEditTime: 2020-05-25 17:33:40
+ * @FilePath: \Linux_driver\include\include\linux\seqlock.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef __LINUX_SEQLOCK_H
 #define __LINUX_SEQLOCK_H
@@ -401,6 +409,7 @@ static inline void write_seqcount_invalidate(seqcount_t *s)
 	s->sequence+=2;
 }
 
+/* 顺序锁 */
 typedef struct {
 	struct seqcount seqcount;
 	spinlock_t lock;
@@ -428,11 +437,27 @@ typedef struct {
 /*
  * Read side functions for starting and finalizing a read side section.
  */
+/**
+ * @function: 读单元访问共享资源的时候调用此函数，此函数会返回顺序锁的顺序号
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline unsigned read_seqbegin(const seqlock_t *sl)
 {
 	return read_seqcount_begin(&sl->seqcount);
 }
 
+/**
+ * @function: 读结束以后调用此函数检查在读的过程中有没有对资源进行写操作，如 有的话就要重读
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
 {
 	return read_seqcount_retry(&sl->seqcount, start);
@@ -443,36 +468,84 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
  * Acts like a normal spin_lock/unlock.
  * Don't need preempt_disable() because that is in the spin_lock already.
  */
+/**
+ * @function: 获取写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_seqlock(seqlock_t *sl)
 {
 	spin_lock(&sl->lock);
 	write_seqcount_begin(&sl->seqcount);
 }
 
+/**
+ * @function: 释放写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_sequnlock(seqlock_t *sl)
 {
 	write_seqcount_end(&sl->seqcount);
 	spin_unlock(&sl->lock);
 }
 
+/**
+ * @function: 关闭下半部，并获取写读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_seqlock_bh(seqlock_t *sl)
 {
 	spin_lock_bh(&sl->lock);
 	write_seqcount_begin(&sl->seqcount);
 }
 
+/**
+ * @function: 打开下半部，并释放写读锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_sequnlock_bh(seqlock_t *sl)
 {
 	write_seqcount_end(&sl->seqcount);
 	spin_unlock_bh(&sl->lock);
 }
 
+/**
+ * @function: 禁止本地中断，并且获取写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_seqlock_irq(seqlock_t *sl)
 {
 	spin_lock_irq(&sl->lock);
 	write_seqcount_begin(&sl->seqcount);
 }
 
+/**
+ * @function: 打开本地中断，并且释放写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void write_sequnlock_irq(seqlock_t *sl)
 {
 	write_seqcount_end(&sl->seqcount);
@@ -488,9 +561,25 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
 	return flags;
 }
 
+/**
+ * @function: 保存中断状态，禁止本地中断，并获取写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define write_seqlock_irqsave(lock, flags)				\
 	do { flags = __write_seqlock_irqsave(lock); } while (0)
 
+/**
+ * @function: 将中断状态恢复到以前的状态，并且激活本地中断，释放写顺序锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void
 write_sequnlock_irqrestore(seqlock_t *sl, unsigned long flags)
 {

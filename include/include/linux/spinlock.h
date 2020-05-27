@@ -327,22 +327,54 @@ static __always_inline raw_spinlock_t *spinlock_check(spinlock_t *lock)
 	return &lock->rlock;
 }
 
+/**
+ * @function: 初始化自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define spin_lock_init(_lock)				\
 do {							\
 	spinlock_check(_lock);				\
 	raw_spin_lock_init(&(_lock)->rlock);		\
 } while (0)
 
+/**
+ * @function: 获取指定的自旋锁，也叫做加锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_lock(spinlock_t *lock)
 {
 	raw_spin_lock(&lock->rlock);
 }
 
+/**
+ * @function: 关闭下半部，并获取自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_lock_bh(spinlock_t *lock)
 {
 	raw_spin_lock_bh(&lock->rlock);
 }
 
+/**
+ * @function: 尝试获取指定的自旋锁，如果没有获取到就返回 0
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline int spin_trylock(spinlock_t *lock)
 {
 	return raw_spin_trylock(&lock->rlock);
@@ -358,11 +390,27 @@ do {									\
 	raw_spin_lock_nest_lock(spinlock_check(lock), nest_lock);	\
 } while (0)
 
+/**
+ * @function: 禁止本地中断，并获取自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_lock_irq(spinlock_t *lock)
 {
 	raw_spin_lock_irq(&lock->rlock);
 }
 
+/**
+ * @function: 保存中断状态，禁止本地中断，并获取自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define spin_lock_irqsave(lock, flags)				\
 do {								\
 	raw_spin_lock_irqsave(spinlock_check(lock), flags);	\
@@ -373,21 +421,53 @@ do {									\
 	raw_spin_lock_irqsave_nested(spinlock_check(lock), flags, subclass); \
 } while (0)
 
+/**
+ * @function: 释放指定的自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_unlock(spinlock_t *lock)
 {
 	raw_spin_unlock(&lock->rlock);
 }
 
+/**
+ * @function: 打开下半部，并释放自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_unlock_bh(spinlock_t *lock)
 {
 	raw_spin_unlock_bh(&lock->rlock);
 }
 
+/**
+ * @function: 激活本地中断，并释放自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_unlock_irq(spinlock_t *lock)
 {
 	raw_spin_unlock_irq(&lock->rlock);
 }
 
+/**
+ * @function: 将中断状态恢复到以前的状态，并且激活本地中断，释放自旋锁
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static __always_inline void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
 {
 	raw_spin_unlock_irqrestore(&lock->rlock, flags);
@@ -425,6 +505,15 @@ static __always_inline int spin_trylock_irq(spinlock_t *lock)
  * Further, on CONFIG_SMP=n builds with CONFIG_DEBUG_SPINLOCK=n,
  * the return value is always 0 (see include/linux/spinlock_up.h).
  * Therefore you should not rely heavily on the return value.
+ */
+
+/**
+ * @function: 检查指定的自旋锁是否被获取，如 没有被获取就返回非 0，否则返回 0
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 static __always_inline int spin_is_locked(spinlock_t *lock)
 {
