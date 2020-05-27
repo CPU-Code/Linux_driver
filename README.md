@@ -23,12 +23,22 @@ inlcude：
             cdev.h：字符设备
             fs.h: 设备号
             of_gpio.h
-            atomic-fallback.h
+            atomic_fallback.h
             gpio.h
             kdev_t.h
             of_fdt.h
             types.h
             uaccess.h
+            delay.h
+            jiffies.h
+            mutex.h
+            rwlock_types.h
+            rwlock.h
+            semaphore.h
+            seqlock.h
+            spinlock_types.h
+            spinlock.h
+            timer.h
 
         asm-generic:
 
@@ -38,6 +48,7 @@ inlcude：
             gpio.h
             atomic-instrumented.h
             atomic.h
+            param.h
 
     arch
         arm:
@@ -55,6 +66,7 @@ inlcude：
 
                 gpio.h
                 atomic.h
+                delay.h
 
             mach-imx：
                 mach-imx6ul.c
