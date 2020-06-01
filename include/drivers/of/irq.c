@@ -33,6 +33,16 @@
  * This function is a wrapper that chains of_irq_parse_one() and
  * irq_create_of_mapping() to make things easier to callers
  */
+/**
+ * @function: 从 interupts 属性中提取到对应的设备号
+ * @parameter: 
+ * 		dev： 设备节点
+ * 		index：索引号， interrupts 属性可能包含多条中断信息，通过 index 指定要获取的信息
+ * @return: 
+ *     success: 中断号
+ *     error:
+ * @note: 
+ */
 unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
 {
 	struct of_phandle_args oirq;
