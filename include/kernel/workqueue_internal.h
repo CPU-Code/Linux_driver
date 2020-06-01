@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-03-05 22:46:32
+ * @LastEditTime: 2020-05-28 09:16:44
+ * @FilePath: \Linux_driver\include\kernel\workqueue_internal.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * kernel/workqueue_internal.h
@@ -20,6 +28,14 @@ struct worker_pool;
  * details on the locking annotation (L, I, X...), refer to workqueue.c.
  *
  * Only to be used in workqueue and async.
+ */
+/**
+ * @function: 工作者线程
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 struct worker {
 	/* on idle list while idle, on busy hash table while busy */
