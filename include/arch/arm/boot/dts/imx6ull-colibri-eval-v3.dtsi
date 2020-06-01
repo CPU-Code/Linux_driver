@@ -88,7 +88,9 @@
 		pinctrl-0 = <&pinctrl_can_int>;
 		reg = <0>;
 		clocks = <&clk16m>;
+		/* 设置中断控制器，这里使用 gpio2 作为中断控制器 */
 		interrupt-parent = <&gpio2>;
+		/* 设置中断信息， 4 表示 GPIO2_IO04，下降沿触发 */
 		interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
 		spi-max-frequency = <10000000>;
 		vdd-supply = <&reg_3v3>;

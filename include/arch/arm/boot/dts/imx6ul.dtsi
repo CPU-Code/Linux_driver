@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-19 10:02:56
- * @LastEditTime: 2020-05-20 12:26:21
+ * @LastEditTime: 2020-05-28 12:28:26
  * @FilePath: \Linux_driver\include\arch\arm\boot\dts\imx6ul.dtsi
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -237,9 +237,13 @@
 		};
 
 		intc: interrupt-controller@a01000 {
+			/* compatible 属性值为“arm,cortex-a7-gic” */
 			compatible = "arm,gic-400", "arm,cortex-a7-gic";
+			/* 描述中断信息 */
 			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_HIGH)>;
+			/* 描述了 interrupts 属性的 cells 大小 */
 			#interrupt-cells = <3>;
+			/* 当前节点是中断控制器 */
 			interrupt-controller;
 			interrupt-parent = <&intc>;
 			reg = <0x00a01000 0x1000>,
@@ -572,11 +576,17 @@
 			gpio5: gpio@20ac000 {
 				compatible = "fsl,imx6ul-gpio", "fsl,imx35-gpio";
 				reg = <0x020ac000 0x4000>;
+				/*  interrupts 描述中断源信息 */
+				/**
+				 * 中断类型都是 SPI，触发电平都是 IRQ_TYPE_LEVEL_HIGH
+				 *不同之处在于中断源，一个是 74，一个是 75 
+				 */
 				interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
 					     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
 				clocks = <&clks IMX6UL_CLK_GPIO5>;
 				gpio-controller;
 				#gpio-cells = <2>;
+				/*  gpio5 节点也是个中断控制器，用于控制 gpio5 所有 IO的中断 */
 				interrupt-controller;
 				#interrupt-cells = <2>;
 				gpio-ranges = <&iomuxc 0 7 10>, <&iomuxc 10 5 2>;
