@@ -76,6 +76,15 @@ static inline int gpio_cansleep(unsigned int gpio)
 	return __gpio_cansleep(gpio);
 }
 
+/**
+ * @function: 获取 gpio 对应的中断号
+ * @parameter: 
+ * 		gpio： 要获取的 GPIO 编号
+ * @return: 
+ *     success: GPIO 对应的中断号
+ *     error:
+ * @note: 
+ */
 static inline int gpio_to_irq(unsigned int gpio)
 {
 	return __gpio_to_irq(gpio);
