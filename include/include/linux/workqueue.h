@@ -99,10 +99,18 @@ enum {
 	WORKER_DESC_LEN		= 24,
 };
 
+/**
+ * @function: 一个工作
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 struct work_struct {
 	atomic_long_t data;
 	struct list_head entry;
-	work_func_t func;
+	work_func_t func;		/* 工作队列处理函数 */
 #ifdef CONFIG_LOCKDEP
 	struct lockdep_map lockdep_map;
 #endif
@@ -194,6 +202,16 @@ struct execute_work {
 				     (tflags) | TIMER_IRQSAFE),		\
 	}
 
+/**
+ * @function: 一次性完成工作的创建和初始化
+ * @parameter: 
+ * 		n: 定义的工作(work_struct)
+ * 		f: 工作对应的处理函数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define DECLARE_WORK(n, f)						\
 	struct work_struct n = __WORK_INITIALIZER(n, f)
 
@@ -246,6 +264,16 @@ static inline unsigned int work_static(struct work_struct *work) { return 0; }
 	} while (0)
 #endif
 
+/**
+ * @function: 初始化工作
+ * @parameter: 
+ * 		_work: 初始化的工作
+ * 		_func: 工作对应的处理函数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define INIT_WORK(_work, _func)						\
 	__INIT_WORK((_work), (_func), 0)
 
@@ -546,6 +574,15 @@ static inline bool schedule_work_on(int cpu, struct work_struct *work)
  * This puts a job in the kernel-global workqueue if it was not already
  * queued and leaves it in the same position on the kernel-global
  * workqueue otherwise.
+ */
+/**
+ * @function: 工作的调度
+ * @parameter: 
+ * 		work： 要调度的工作
+ * @return: 
+ *     success: 0
+ *     error: 其他
+ * @note: 
  */
 static inline bool schedule_work(struct work_struct *work)
 {
