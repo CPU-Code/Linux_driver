@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:48:08
- * @LastEditTime: 2020-05-20 11:11:41
+ * @LastEditTime: 2020-05-28 09:49:50
  * @FilePath: \Linux_driver\include\arch\arm\include\asm\gpio.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -30,6 +30,15 @@
  * to override it.
  */
 #ifndef gpio_to_irq
+/**
+ * @function: 获取 gpio 对应的中断号
+ * @parameter: 
+ *      gpio： 要获取的 GPIO 编号
+ * @return: 
+ *     success: GPIO 对应的中断号
+ *     error:
+ * @note: 
+ */
 #define gpio_to_irq	__gpio_to_irq
 #endif
 
