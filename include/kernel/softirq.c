@@ -452,6 +452,16 @@ void __raise_softirq_irqoff(unsigned int nr)
 	or_softirq_pending(1UL << nr);
 }
 
+/**
+ * @function: 注册对应的软中断处理函数
+ * @parameter: 
+ * 		nr：要开启的软中断
+ * 		action：软中断对应的处理函数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void open_softirq(int nr, void (*action)(struct softirq_action *))
 {
 	softirq_vec[nr].action = action;
@@ -546,6 +556,17 @@ static __latent_entropy void tasklet_hi_action(struct softirq_action *a)
 	tasklet_action_common(a, this_cpu_ptr(&tasklet_hi_vec), HI_SOFTIRQ);
 }
 
+/**
+ * @function: 初始化 tasklet
+ * @parameter: 
+ * 		t：要初始化的 tasklet
+ * 		func： tasklet 的处理函数
+ * 		data： 要传递给 func 函数的参数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void tasklet_init(struct tasklet_struct *t,
 		  void (*func)(unsigned long), unsigned long data)
 {
@@ -572,6 +593,14 @@ void tasklet_kill(struct tasklet_struct *t)
 }
 EXPORT_SYMBOL(tasklet_kill);
 
+/**
+ * @function: 初始化软中断
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void __init softirq_init(void)
 {
 	int cpu;
@@ -583,6 +612,7 @@ void __init softirq_init(void)
 			&per_cpu(tasklet_hi_vec, cpu).head;
 	}
 
+	/* 默认会打开 TASKLET_SOFTIRQ 和 HI_SOFTIRQ */
 	open_softirq(TASKLET_SOFTIRQ, tasklet_action);
 	open_softirq(HI_SOFTIRQ, tasklet_hi_action);
 }
