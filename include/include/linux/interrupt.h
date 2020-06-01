@@ -702,13 +702,22 @@ static inline struct task_struct *this_cpu_ksoftirqd(void)
 
 struct tasklet_struct
 {
-	struct tasklet_struct *next;
-	unsigned long state;
-	atomic_t count;
-	void (*func)(unsigned long);
-	unsigned long data;
+	struct tasklet_struct *next;	/* 下一个 tasklet */
+	unsigned long state;			/* tasklet 状态 */
+	atomic_t count;					/* 计数器，记录对 tasklet 的引用数 */
+	void (*func)(unsigned long);	/* tasklet 执行的函数 */
+	unsigned long data;				/* 函数 func 的参数 */
 };
 
+/**
+ * @function: 一次性完成 tasklet 的定义 和 初始化
+ * @parameter: 
+ * 		name ：要定义的 tasklet 名字
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define DECLARE_TASKLET(name, func, data) \
 struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(0), func, data }
 
@@ -746,6 +755,15 @@ static inline void tasklet_unlock_wait(struct tasklet_struct *t)
 
 extern void __tasklet_schedule(struct tasklet_struct *t);
 
+/**
+ * @function: 能使 tasklet 在合适的时间运行
+ * @parameter: 
+ * 		t：要调度的 tasklet，也就是 DECLARE_TASKLET 宏里面的 name
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void tasklet_schedule(struct tasklet_struct *t)
 {
 	if (!test_and_set_bit(TASKLET_STATE_SCHED, &t->state))
