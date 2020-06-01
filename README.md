@@ -17,7 +17,7 @@ inlcude：
             fs.h: 设备号
             of_gpio.h
             atomic_fallback.h
-            gpio.h
+            gpio.h：中断号
             kdev_t.h
             of_fdt.h
             types.h
@@ -32,9 +32,10 @@ inlcude：
             spinlock_types.h
             spinlock.h
             timer.h
-            interrupt.h 中断操作
+            interrupt.h：中断操作、tasklet
             irqflags.h 中断操作
-            irqreturn.h
+            irqreturn.h：中断类型
+            workqueue.h: 工作
 
         asm-generic:
 
@@ -52,7 +53,8 @@ inlcude：
                 imx6ull.dtsi
                 inmx6ull-colibri.dtsi
                 Makefile
-                imx6ul.dtsi
+                imx6ul.dtsi：中断设备
+                imx6ull-colibri-eval-v3.dtsi: 中断设备
 
             include: 头文件
 
@@ -60,7 +62,7 @@ inlcude：
                 mach:
                     arch.h
 
-                gpio.h
+                gpio.h：中断
                 atomic.h
                 delay.h
 
@@ -73,6 +75,15 @@ inlcude：
 
             drivers\of:
                 fdt.c
+
+    kernel:
+        softirq.c: 软中断
+        workqueue_internal.h: 工作线程
+        workqueue.c: 工作队列
+
+
+    drivers/of:
+        irq.c: 设备号
 
     Documentation\devicetree\bindings: 绑定文档，设备树是用来描述板子上的设备信息的，不同的设备其信息不同，反映到设备树中就是属性不同
 
