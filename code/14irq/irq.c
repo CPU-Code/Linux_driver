@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-27 14:12:32
- * @LastEditTime: 2020-05-27 20:06:42
+ * @LastEditTime: 2020-06-01 16:15:47
  * @FilePath: \Linux_driver\code\14irq\irq.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -56,7 +56,7 @@ struct irq_dev
     struct device_node	*nd;            /* 设备节点     */
     atomic_t           keyvalue;		/* 有效的按键键值 */
     atomic_t           releasekey;	    /* 标记是否完成一次完成的按键，包括按下和释放 */
-    struct timer_list  timer;           /* 定义一个定时器   */
+    struct timer_list  timer;           /* 定义一个定时器，按键消抖定时器   */
     struct irq_keydesc irqkeydesc[KEY_NUM];	/* 按键描述数组 */
     unsigned char      curkeynum;			/* 当前的按键号 */
 };
@@ -77,16 +77,18 @@ static irqreturn_t key0_handler(int irq, void *dev_id)
 {
     struct irq_dev *dev = (struct irq_dev *)dev_id;
 
-    dev->curkeynum = 0;
+    dev->curkeynum = 0;     /* 当前按键为 KEY0 */
     dev->timer.data = (volatile long)dev_id;
 
+    /* 修改定时器 */
     mod_timer(&dev->timer, jiffies + msecs_to_jiffies(10));	/* 10ms定时 */
 
     return IRQ_RETVAL(IRQ_HANDLED);
 }
 
 /**
- * @function:  定时器服务函数，用于按键消抖，定时器到了以后再次读取按键值，如 按键还是处于按下状态就表示按键有效
+ * @function:  定时器服务函数，用于按键消抖，定时器到了以后再次读取按键值，
+ *              如 按键还是处于按下状态就表示按键有效
  * @parameter: 
  *       arg	: 设备结构变量
  * @return: 
@@ -158,11 +160,14 @@ static int keyio_init(void)
         memset(irq.irqkeydesc[i].name, 0, sizeof(name));	/* 缓冲区清零 */
         sprintf(irq.irqkeydesc[i].name, "KEY%d", i);		/* 组合名字 */
 
+        /* 申请GPIO */
         gpio_request(irq.irqkeydesc[i].gpio, name);
+        /* 设置输入端口 */
         gpio_direction_input(irq.irqkeydesc[i].gpio);
 
         irq.irqkeydesc[i].irqnum = irq_of_parse_and_map(irq.nd, i);
 #if 0
+        /* 从设备树中获取 IO 的中断号 */
         irq.irqkeydesc[i].irqnum = gpio_to_irq(irq.irqkeydesc[i].gpio);
 #endif
         printk("key%d:gpio = %d, irqnum = %d\r\n", i, 
@@ -175,6 +180,7 @@ static int keyio_init(void)
 
     for(i = 0; i < KEY_NUM; i++)
     {
+        /* 申请中断号，上升沿和下降沿都可以触发中断 */
         ret = request_irq(irq.irqkeydesc[i].irqnum, 
                           irq.irqkeydesc[i].handler, 
 		                  IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING, 
@@ -189,6 +195,7 @@ static int keyio_init(void)
 
     /* 创建定时器 */
     init_timer(&irq.timer);
+    /* 设置定时器的定时处理函数 */
     irq.timer.function = timer_function;
 
     return 0;

@@ -1,8 +1,19 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-27 14:31:22
- * @LastEditTime: 2020-05-27 14:31:28
+ * @LastEditTime: 2020-05-28 12:00:04
  * @FilePath: \Linux_driver\code\14irq\irq.dts
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
  */ 
+/{
+    key
+    {
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        compatible = "gpio-key";
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_key>;
+    };
+};
