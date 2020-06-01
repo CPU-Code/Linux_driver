@@ -235,6 +235,14 @@ struct wq_device;
  * The externally visible workqueue.  It relays the issued work items to
  * the appropriate worker_pool through its pool_workqueues.
  */
+/**
+ * @function: 工作队列
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 struct workqueue_struct {
 	struct list_head	pwqs;		/* WR: all pwqs of this wq */
 	struct list_head	list;		/* PR: list of all workqueues */
