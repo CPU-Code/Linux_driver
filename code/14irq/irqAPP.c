@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-27 14:12:51
- * @LastEditTime: 2020-06-01 15:56:58
+ * @LastEditTime: 2020-06-02 16:34:31
  * @FilePath: \Linux_driver\code\14irq\irqAPP.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
                 printf("key value = %#X\r\n", data);
             }
         }
+        close(fd);
     }
-
-    close(fd);
+    
 	return ret;
 }
