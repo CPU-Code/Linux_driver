@@ -45,6 +45,16 @@ typedef struct poll_table_struct {
 	__poll_t _key;
 } poll_table;
 
+/**
+ * @function: 不会引起阻塞， 只是将应用程序添加到 poll_table 中
+ * @parameter: 
+ * 		 wait_address : 要添加到 poll_table 中的等待队列头
+ * 		 p : poll_table，就是file_operations 中 poll 函数的 wait 参数
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
 {
 	if (p && p->_qproc && wait_address)

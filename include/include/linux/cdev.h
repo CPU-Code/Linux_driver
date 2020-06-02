@@ -46,7 +46,7 @@ struct cdev *cdev_alloc(void);
 void cdev_put(struct cdev *p);
 
 /**
- * @function: 向 Linux 系统添加字符设备(cdev 结构体变量)，
+ * @function: 向 Linux 系统添加字符设备(cdev 结构体变量)
  * @parameter: 
  * 		cdev:指向要添加的字符设备(cdev 结构体变量)
  * 		dev_t:设备所使用的设备号

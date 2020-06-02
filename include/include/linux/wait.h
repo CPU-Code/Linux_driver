@@ -31,6 +31,14 @@ struct wait_queue_entry {
 	struct list_head	entry;
 };
 
+/**
+ * @function: 等待队列头
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 struct wait_queue_head {
 	spinlock_t		lock;
 	struct list_head	head;
@@ -48,6 +56,16 @@ struct task_struct;
 	.func		= default_wake_function,				\
 	.entry		= { NULL, NULL } }
 
+/**
+ * @function: 定义并初始化一个等待队列项
+ * @parameter: 
+ * 		name : 等待队列项的名字
+ * 		tsk : 这个等待队列项属于哪个任务(进程)，一般设置为current
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define DECLARE_WAITQUEUE(name, tsk)						\
 	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)
 
@@ -60,6 +78,15 @@ struct task_struct;
 
 extern void __init_waitqueue_head(struct wait_queue_head *wq_head, const char *name, struct lock_class_key *);
 
+/**
+ * @function: 初始化等待队列头
+ * @parameter: 
+ * 		wq_head: 要初始化的等待队列头
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define init_waitqueue_head(wq_head)						\
 	do {									\
 		static struct lock_class_key __key;				\
@@ -73,6 +100,14 @@ extern void __init_waitqueue_head(struct wait_queue_head *wq_head, const char *n
 # define DECLARE_WAIT_QUEUE_HEAD_ONSTACK(name) \
 	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INIT_ONSTACK(name)
 #else
+/**
+ * @function: 一次性完成等待队列头的定义的初始化
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 # define DECLARE_WAIT_QUEUE_HEAD_ONSTACK(name) DECLARE_WAIT_QUEUE_HEAD(name)
 #endif
 
@@ -206,12 +241,30 @@ void __wake_up_locked_sync_key(struct wait_queue_head *wq_head, unsigned int mod
 void __wake_up_locked(struct wait_queue_head *wq_head, unsigned int mode, int nr);
 void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode);
 
+/**
+ * @function: 唤醒进入休眠态的进程，唤醒处于 TASK_INTERRUPTIBLE 和 TASK_UNINTERRUPTIBLE 状态的进程
+ * @parameter: 
+ * 		 x : 要唤醒的等待队列头
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define wake_up(x)			__wake_up(x, TASK_NORMAL, 1, NULL)
 #define wake_up_nr(x, nr)		__wake_up(x, TASK_NORMAL, nr, NULL)
 #define wake_up_all(x)			__wake_up(x, TASK_NORMAL, 0, NULL)
 #define wake_up_locked(x)		__wake_up_locked((x), TASK_NORMAL, 1)
 #define wake_up_all_locked(x)		__wake_up_locked((x), TASK_NORMAL, 0)
 
+/**
+ * @function: 唤醒进入休眠态的进程，只能唤醒处于 TASK_INTERRUPTIBLE 状态的进程
+ * @parameter: 
+ * 		x : 要唤醒的等待队列头
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define wake_up_interruptible(x)	__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
 #define wake_up_interruptible_nr(x, nr)	__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
 #define wake_up_interruptible_all(x)	__wake_up(x, TASK_INTERRUPTIBLE, 0, NULL)
@@ -299,6 +352,16 @@ __out:	__ret;									\
  * wake_up() has to be called after changing any variable that could
  * change the result of the wait condition.
  */
+/**
+ * @function: 等待以 wq_head 为等待队列头的等待队列被唤醒，
+ * 				前提是 condition 条件必须满足(为真)，否则一直阻塞。
+ *				并将进程设置为TASK_UNINTERRUPTIBLE 状态
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define wait_event(wq_head, condition)						\
 do {										\
 	might_sleep();								\
@@ -370,6 +433,14 @@ do {										\
  * 1 if the @condition evaluated to %true after the @timeout elapsed,
  * or the remaining jiffies (at least 1) if the @condition evaluated
  * to %true before the @timeout elapsed.
+ */
+/**
+ * @function: 等待队列头的等待队列被唤醒，可以添加超时时间，以 jiffies 为单位
+ * @parameter: 
+ * @return: 
+ *     success: 1 的话表示 condition 为真，也就是条件满足
+ *     error: 0 的话表示超时时间到，且 condition为假
+ * @note: 
  */
 #define wait_event_timeout(wq_head, condition, timeout)				\
 ({										\
@@ -455,6 +526,15 @@ do {										\
  * The function will return -ERESTARTSYS if it was interrupted by a
  * signal and 0 if @condition evaluated to true.
  */
+/**
+ * @function: 等待以 wq_head 为等待队列头的等待队列被唤醒，
+ * 				将进程设置为 TASK_INTERRUPTIBLE，就是可以被信号打断
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define wait_event_interruptible(wq_head, condition)				\
 ({										\
 	int __ret = 0;								\
@@ -488,6 +568,14 @@ do {										\
  * the remaining jiffies (at least 1) if the @condition evaluated
  * to %true before the @timeout elapsed, or -%ERESTARTSYS if it was
  * interrupted by a signal.
+ */
+/**
+ * @function: 与 wait_event_timeout 函数类似，将进程设置为 TASK_INTERRUPTIBLE，可以被信号打断
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
  */
 #define wait_event_interruptible_timeout(wq_head, condition, timeout)		\
 ({										\

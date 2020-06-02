@@ -104,6 +104,15 @@ enum irq_domain_bus_token {
 struct irq_domain_ops {
 	int (*match)(struct irq_domain *d, struct device_node *node,
 		     enum irq_domain_bus_token bus_token);
+	/**
+	 * @function: 
+	 * @parameter: 
+	 * 		d: 监视的这三类文件描述集合中， 最大文件描述符加 1
+	 * @return: 
+	 *     success: 
+	 *     error:
+	 * @note: 
+ 	 */
 	int (*select)(struct irq_domain *d, struct irq_fwspec *fwspec,
 		      enum irq_domain_bus_token bus_token);
 	int (*map)(struct irq_domain *d, unsigned int virq, irq_hw_number_t hw);

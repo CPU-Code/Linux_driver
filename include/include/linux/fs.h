@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:41:46
- * @LastEditTime: 2020-05-19 22:18:52
+ * @LastEditTime: 2020-06-02 17:48:02
  * @FilePath: \Linux_driver\include\include\linux\fs.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -1836,6 +1836,21 @@ struct file_operations {
 	int (*iopoll)(struct kiocb *kiocb, bool spin);
 	int (*iterate) (struct file *, struct dir_context *);
 	int (*iterate_shared) (struct file *, struct dir_context *);
+	/**
+	 * @function: 
+	 * @parameter: 
+	 * 		file: 要打开的设备文件(文件描述符)
+	 * 		poll_table_struct：由应用程序传递进来的。一般将此参数传递给poll_wait 函数
+	 * @return: 
+	 *      POLLIN 有数据可以读取
+	 *      POLLPRI 有紧急的数据需要读取
+	 * 		POLLOUT 可以写数据
+	 * 		POLLERR 指定的文件描述符发生错误
+	 * 		POLLHUP 指定的文件描述符挂起
+	 * 		POLLNVAL 无效的请求
+	 * 		POLLRDNORM 等同于 POLLIN，普通数据可读
+	 * @note: 
+	 */
 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
