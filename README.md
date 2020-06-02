@@ -36,16 +36,18 @@ inlcude：
             irqflags.h 中断操作
             irqreturn.h：中断类型
             workqueue.h: 工作
+            irqdomain.h: 
+            poll.h：非堵塞
+            wait.h: 等待队列头
 
         asm-generic:
-
             bitops:
                 atomic.h
-
             gpio.h
             atomic-instrumented.h
             atomic.h
             param.h
+            current.h: 当前进程
 
     arch
         arm:
@@ -80,6 +82,10 @@ inlcude：
         softirq.c: 软中断
         workqueue_internal.h: 工作线程
         workqueue.c: 工作队列
+        irq:
+            manage.c: 释放掉相应的中断
+        sched:
+            wait.c: 等待队列项添加
 
 
     drivers/of:
@@ -98,14 +104,11 @@ uboot_include：
 
 code:
 
-    1chrdevbase：
-        字符驱动开发的模板
+    1chrdevbase：字符驱动开发的模板
 
-    2Led：
-        LED驱动开发
+    2Led：LED驱动开发
 
-    3newchrled：
-        新LED字符驱动开发
+    3newchrled：新LED字符驱动开发
 
     4dtsled:
 
@@ -127,8 +130,11 @@ code:
 
     13
 
-    14irq：
-        中断实验
+    14irq：中断实验
+
+    block: 堵塞IO
+
+    noblock: 
 
 ## 使用说明
 
