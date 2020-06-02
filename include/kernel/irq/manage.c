@@ -1837,6 +1837,17 @@ EXPORT_SYMBOL_GPL(remove_irq);
  *
  *	Returns the devname argument passed to request_irq.
  */
+ /**
+ * @function: 释放掉相应的中断
+ * @parameter: 
+ * 		irq： 要释放的中断
+ * 		dev：如 中断设置为共享(IRQF_SHARED)的话，此用来区分具体的中断
+ * 				共享中断只有在释放，最后中断处理函数的时候才会被禁止掉
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 const void *free_irq(unsigned int irq, void *dev_id)
 {
 	struct irq_desc *desc = irq_to_desc(irq);

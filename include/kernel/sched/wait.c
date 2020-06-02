@@ -15,6 +15,16 @@ void __init_waitqueue_head(struct wait_queue_head *wq_head, const char *name, st
 
 EXPORT_SYMBOL(__init_waitqueue_head);
 
+/**
+ * @function: 等待队列项添加
+ * @parameter: 
+ * 		wq_head： 等待队列项要加入的等待队列头
+ * 		wq_entry：要加入的等待队列项
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void add_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)
 {
 	unsigned long flags;
@@ -37,6 +47,16 @@ void add_wait_queue_exclusive(struct wait_queue_head *wq_head, struct wait_queue
 }
 EXPORT_SYMBOL(add_wait_queue_exclusive);
 
+/**
+ * @function: 等待队列项移除
+ * @parameter: 
+ * 		wq_head: 要删除的等待队列项所处的等待队列头
+ * 		wq_entry: 要删除的等待队列项
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void remove_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)
 {
 	unsigned long flags;
