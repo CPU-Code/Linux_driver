@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:41:46
- * @LastEditTime: 2020-06-02 17:48:02
+ * @LastEditTime: 2020-06-03 17:20:33
  * @FilePath: \Linux_driver\include\include\linux\fs.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -1347,6 +1347,14 @@ struct fasync_struct {
 
 #define FASYNC_MAGIC 0x4601
 
+/**
+ * @function: 初始化前面定义的 fasync_struct 结构体指针
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 /* SMP safe fasync helpers: */
 extern int fasync_helper(int, struct file *, int, struct fasync_struct **);
 extern struct fasync_struct *fasync_insert_entry(int, struct file *, struct fasync_struct **, struct fasync_struct *);
