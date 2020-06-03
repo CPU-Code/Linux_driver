@@ -134,7 +134,7 @@ code:
 
     block: 堵塞IO
 
-    noblock: 
+    noblock: 非堵塞
 
 ## 使用说明
 
