@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-06-02 13:18:02
- * @LastEditTime: 2020-06-02 19:04:25
+ * @LastEditTime: 2020-06-03 11:01:28
  * @FilePath: \Linux_driver\code\block\block.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -225,7 +225,7 @@ static int keyio_init(void)
  */
 static int irq_open(struct inode *inode, struct file *filp)
 {
-    filp->private_data = &imx6uirq;	/* 设置私有数据 */
+    filp->private_data = &irq;	/* 设置私有数据 */
 
     return 0;
 }
@@ -313,7 +313,7 @@ data_error:
 }
 
 /* 设备操作函数 */
-static struct file_operations imx6uirq_fops ={
+static struct file_operations irq_fops ={
     .owner = THIS_MODULE,
     .open = irq_open,
     .read = irq_read,
