@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-06-02 19:24:31
- * @LastEditTime: 2020-06-02 22:14:21
+ * @LastEditTime: 2020-06-03 11:00:33
  * @FilePath: \Linux_driver\code\noblock\noblock.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -46,7 +46,7 @@ struct irq_keydesc
     irqreturn_t (*handler)(int, void *);	/* 中断服务函数 */
 };
 
-/* imx6uirq设备结构体 */
+/* irq设备结构体 */
 struct irq_dev
 {
     dev_t devid;			/* 设备号 	 */
@@ -103,7 +103,7 @@ void timer_function(unsigned long arg)
     unsigned char value;
 	unsigned char num;
 	struct irq_keydesc *keydesc;
-	struct imx6uirq_dev *dev = (struct irq_dev *)arg;
+	struct irq_dev *dev = (struct irq_dev *)arg;
 
     num = dev->curkeynum;
 	keydesc = &dev->irqkeydesc[num];
@@ -142,7 +142,7 @@ static int keyio_init(void)
     unsigned char i = 0;
 	char name[10];
 	int ret = 0;
-
+    
     //查找节点
     irq.nd = of_find_node_by_path("/key");
     if(irq.nd == NULL)
@@ -321,7 +321,7 @@ unsigned int irq_poll(struct file *filp, struct poll_table_struct *wait)
 }
 
 /* 设备操作函数 */
-static struct file_operations imx6uirq_fops ={
+static struct file_operations irq_fops ={
     .owner = THIS_MODULE,
     .open = irq_open,
     .read = irq_read,
@@ -360,9 +360,9 @@ static int __init irq_init(void)
 
     /* 3、创建类 */
     irq.class = class_create(THIS_MODULE, IRQ_NAME);
-    if(IS_ERR(imx6uirq.class))
+    if(IS_ERR(irq.class))
     {
-        return PTR_ERR(imx6uirq.class);
+        return PTR_ERR(irq.class);
     }
 
     /* 4、创建设备 */
