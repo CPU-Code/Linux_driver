@@ -136,6 +136,8 @@ code:
 
     noblock: 非堵塞
 
+    asyncnoti: 异步通知
+
 ## 使用说明
 
 #### 初次编译
