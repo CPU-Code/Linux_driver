@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:55
+ * @LastEditTime: 2020-06-04 22:31:12
+ * @FilePath: \Linux_driver\include\include\linux\miscdevice.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _LINUX_MISCDEVICE_H
 #define _LINUX_MISCDEVICE_H
@@ -63,11 +71,11 @@
 
 struct device;
 struct attribute_group;
-
+/* MISC 设备的主设备号为 10 */
 struct miscdevice  {
-	int minor;
-	const char *name;
-	const struct file_operations *fops;
+	int minor;			/* 子设备号 */
+	const char *name;		/* 设备名字 */
+	const struct file_operations *fops;		/* 设备操作集 */
 	struct list_head list;
 	struct device *parent;
 	struct device *this_device;
@@ -76,7 +84,26 @@ struct miscdevice  {
 	umode_t mode;
 };
 
+/**
+ * @function: 注册一个 MISC 设备
+ * @parameter: 
+ * 		misc：要注册的 MISC 设备
+ * @return: 
+ *     success: 0
+ *     error: 负数
+ * @note: 
+ */
 extern int misc_register(struct miscdevice *misc);
+
+/**
+ * @function: 注销掉 MISC 设备
+ * @parameter: 
+ * 		misc：要注销的 MISC 设备
+ * @return: 
+ *     success: 0
+ *     error: 负数
+ * @note: 
+ */
 extern void misc_deregister(struct miscdevice *misc);
 
 /*
