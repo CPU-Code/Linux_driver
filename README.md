@@ -41,6 +41,7 @@ inlcude：
             wait.h: 等待队列头
             mod_devicetable.h: compatible比较
             platform_device.h: platform 设备
+            miscdevice.h: MISC 设备
 
         asm-generic:
             bitops:
