@@ -142,6 +142,8 @@ code:
 
     platform: platform设备驱动
 
+    dtsplatform:: 设备树platform
+
 ## 使用说明
 
 #### 初次编译
