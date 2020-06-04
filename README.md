@@ -12,7 +12,7 @@ inlcude：
     include:
         linux:
             of.h：设备树节点等操作
-            device.h：类
+            device.h：类、总线
             cdev.h：字符设备
             fs.h: 设备号
             of_gpio.h
@@ -39,6 +39,8 @@ inlcude：
             irqdomain.h: 
             poll.h：非堵塞
             wait.h: 等待队列头
+            mod_devicetable.h: compatible比较
+            platform_device.h: platform 设备
 
         asm-generic:
             bitops:
@@ -137,6 +139,8 @@ code:
     noblock: 非堵塞
 
     asyncnoti: 异步通知
+
+    platform: platform设备驱动
 
 ## 使用说明
 
