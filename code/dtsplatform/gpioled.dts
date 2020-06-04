@@ -1,0 +1,21 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-06-04 21:32:12
+ * @LastEditTime: 2020-06-04 21:34:04
+ * @FilePath: \Linux_driver\code\dtsplatform\gpioled.dts
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
+gpioled
+{
+    #address-cells = <1>;
+    #size-cells = <1>;
+
+    compatible = "gpioled";     /* 与of_match_table 属性表匹配 */
+    pinctrl-names = "default";
+
+    pinctrl-0 = <&pinctrl_led>;
+
+    led-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
+    status = "okay";
+};
