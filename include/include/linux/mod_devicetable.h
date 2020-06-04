@@ -260,6 +260,7 @@ struct sdw_device_id {
 struct of_device_id {
 	char	name[32];
 	char	type[32];
+	/* 通过设备节点的 compatible 属性值和 of_match_table 中每个项目的 compatible 成员变量进行比较 */
 	char	compatible[128];
 	const void *data;
 };
