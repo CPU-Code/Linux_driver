@@ -19,14 +19,22 @@ struct mfd_cell;
 struct property_entry;
 struct platform_device_id;
 
+/**
+ * @function: platform 设备
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 struct platform_device {
-	const char	*name;
+	const char	*name;		//设备名字
 	int		id;
 	bool		id_auto;
 	struct device	dev;
 	u64		dma_mask;
-	u32		num_resources;
-	struct resource	*resource;
+	u32		num_resources;		//资源数量
+	struct resource	*resource;		// 资源，也就是设备信息
 
 	const struct platform_device_id	*id_entry;
 	char *driver_override; /* Driver name to force a match */
@@ -43,7 +51,26 @@ struct platform_device {
 #define dev_is_platform(dev) ((dev)->bus == &platform_bus_type)
 #define to_platform_device(x) container_of((x), struct platform_device, dev)
 
+/**
+ * @function: 将设备信息注册到 Linux 内核中
+ * @parameter: 
+ * 		pdev：要注册的 platform 设备
+ * @return: 
+ *     success: 0
+ *     error: 负数
+ * @note: 
+ */
 extern int platform_device_register(struct platform_device *);
+
+/**
+ * @function: 注销掉相应的 platform 设备
+ * @parameter: 
+ * 		pdev：要注销的 platform 设备
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void platform_device_unregister(struct platform_device *);
 
 extern struct bus_type platform_bus_type;
@@ -194,13 +221,13 @@ extern void platform_device_del(struct platform_device *pdev);
 extern void platform_device_put(struct platform_device *pdev);
 
 struct platform_driver {
-	int (*probe)(struct platform_device *);
+	int (*probe)(struct platform_device *);	//当驱动与设备匹配成功以后 probe 函数就会执行
 	int (*remove)(struct platform_device *);
 	void (*shutdown)(struct platform_device *);
 	int (*suspend)(struct platform_device *, pm_message_t state);
 	int (*resume)(struct platform_device *);
 	struct device_driver driver;
-	const struct platform_device_id *id_table;
+	const struct platform_device_id *id_table;	/* id_table 表 */
 	bool prevent_deferred_probe;
 };
 
@@ -210,10 +237,28 @@ struct platform_driver {
 /*
  * use a macro to avoid include chaining to get THIS_MODULE
  */
+/**
+ * @function: 向 Linux 内核注册一个 platform 驱动
+ * @parameter: 
+ * 		driver：要注册的 platform 驱动
+ * @return: 
+ *     success: 0
+ *     error: 负数
+ * @note: 
+ */
 #define platform_driver_register(drv) \
 	__platform_driver_register(drv, THIS_MODULE)
 extern int __platform_driver_register(struct platform_driver *,
 					struct module *);
+/**
+ * @function: 卸载 platform 驱动
+ * @parameter: 
+ * 		drv：要卸载的 platform 驱动
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void platform_driver_unregister(struct platform_driver *);
 
 /* non-hotpluggable platform devices may use this so that probe() and
