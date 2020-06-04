@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:41:45
- * @LastEditTime: 2020-05-19 22:23:02
+ * @LastEditTime: 2020-06-03 17:53:12
  * @FilePath: \Linux_driver\include\include\linux\device.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -127,14 +127,32 @@ extern void bus_remove_file(struct bus_type *, struct bus_attribute *);
  * default attributes, the bus' methods, PM operations, and the driver core's
  * private data.
  */
+/**
+ * @function: 总线
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 struct bus_type {
-	const char		*name;
+	const char		*name;					/* 总线名字 */
 	const char		*dev_name;
 	struct device		*dev_root;
-	const struct attribute_group **bus_groups;
-	const struct attribute_group **dev_groups;
-	const struct attribute_group **drv_groups;
+	const struct attribute_group **bus_groups;		/* 总线属性 */
+	const struct attribute_group **dev_groups;		/* 设备属性 */
+	const struct attribute_group **drv_groups;		/* 驱动属性 */
 
+	/**
+	 * @function: 完成设备和驱动之间匹配
+	 * @parameter: 
+	 * 		dev：设备
+	 * 		drv：驱动
+	 * @return: 
+	 *     success: 
+	 *     error:
+	 * @note: 
+	 */
 	int (*match)(struct device *dev, struct device_driver *drv);
 	int (*uevent)(struct device *dev, struct kobj_uevent_env *env);
 	int (*probe)(struct device *dev);
@@ -398,7 +416,7 @@ struct device_driver {
 	bool suppress_bind_attrs;	/* disables bind/unbind via sysfs */
 	enum probe_type probe_type;
 
-	const struct of_device_id	*of_match_table;
+	const struct of_device_id	*of_match_table;	/* 采用设备树的时候驱动使用的匹配表 */
 	const struct acpi_device_id	*acpi_match_table;
 
 	int (*probe) (struct device *dev);
