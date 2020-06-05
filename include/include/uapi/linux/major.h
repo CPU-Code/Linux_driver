@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:42:45
+ * @LastEditTime: 2020-06-05 21:47:48
+ * @FilePath: \Linux_driver\include\include\uapi\linux\major.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 #ifndef _LINUX_MAJOR_H
 #define _LINUX_MAJOR_H
@@ -27,7 +35,7 @@
 #define SCSI_CDROM_MAJOR	11
 #define MUX_MAJOR		11	/* PA-RISC only */
 #define XT_DISK_MAJOR		13
-#define INPUT_MAJOR		13
+#define INPUT_MAJOR		13      /* input 子系统的所有设备主设备号都为 13 */
 #define SOUND_MAJOR		14
 #define CDU31A_CDROM_MAJOR	15
 #define JOYSTICK_MAJOR		15
