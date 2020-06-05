@@ -1,10 +1,17 @@
+
+ * @Author: cpu_code
+ * @Date: 2020-05-16 21:32:59
+ * @LastEditTime: 2020-06-05 21:50:55
+ * @FilePath: \Linux_driver\README.md
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+
 # Linux_driver
 
 ## 介绍
 Linux驱动开发
 
 ## 文件说明
-
 
 inlcude： 
     Linux内核文件
@@ -42,6 +49,7 @@ inlcude：
             mod_devicetable.h: compatible比较
             platform_device.h: platform 设备
             miscdevice.h: MISC 设备
+            input.h: input设备
 
         asm-generic:
             bitops:
@@ -51,6 +59,14 @@ inlcude：
             atomic.h
             param.h
             current.h: 当前进程
+
+        uapi：
+            linux：
+                input-event-codes.h： 可选的事件类型
+                major.h:  input 子系统的所有设备主设备号都为 13 
+                input.h:  表示所有的输入事件
+                time.h:  时间
+
 
     arch
         arm:
@@ -146,6 +162,8 @@ code:
     dtsplatform: 设备树platform
 
     miscbeep：蜂鸣器杂项驱动
+
+    input:  input 子系统
 
 ## 使用说明
 
