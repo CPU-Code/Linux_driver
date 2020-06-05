@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:42:51
+ * @LastEditTime: 2020-06-05 19:21:48
+ * @FilePath: \Linux_driver\include\include\uapi\linux\time.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 #ifndef _UAPI_LINUX_TIME_H
 #define _UAPI_LINUX_TIME_H
@@ -14,8 +22,8 @@ struct timespec {
 #endif
 
 struct timeval {
-	__kernel_old_time_t	tv_sec;		/* seconds */
-	__kernel_suseconds_t	tv_usec;	/* microseconds */
+	__kernel_old_time_t	tv_sec;		/* seconds */	/* 秒 */
+	__kernel_suseconds_t	tv_usec;	/* microseconds */	/* 微秒 */
 };
 
 struct timezone {
