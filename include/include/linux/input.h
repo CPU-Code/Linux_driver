@@ -1,3 +1,11 @@
+/*
+ * @Author: cpu_code
+ * @Date: 2020-05-17 09:41:47
+ * @LastEditTime: 2020-06-05 21:44:03
+ * @FilePath: \Linux_driver\include\include\linux\input.h
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+ */ 
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 1999-2002 Vojtech Pavlik
@@ -128,6 +136,7 @@ enum input_clock_type {
  * @timestamp: storage for a timestamp set by input_set_timestamp called
  *  by a driver
  */
+/* input设备 */
 struct input_dev {
 	const char *name;
 	const char *phys;
@@ -136,15 +145,15 @@ struct input_dev {
 
 	unsigned long propbit[BITS_TO_LONGS(INPUT_PROP_CNT)];
 
-	unsigned long evbit[BITS_TO_LONGS(EV_CNT)];
-	unsigned long keybit[BITS_TO_LONGS(KEY_CNT)];
-	unsigned long relbit[BITS_TO_LONGS(REL_CNT)];
-	unsigned long absbit[BITS_TO_LONGS(ABS_CNT)];
-	unsigned long mscbit[BITS_TO_LONGS(MSC_CNT)];
-	unsigned long ledbit[BITS_TO_LONGS(LED_CNT)];
-	unsigned long sndbit[BITS_TO_LONGS(SND_CNT)];
-	unsigned long ffbit[BITS_TO_LONGS(FF_CNT)];
-	unsigned long swbit[BITS_TO_LONGS(SW_CNT)];
+	unsigned long evbit[BITS_TO_LONGS(EV_CNT)];		/* 事件类型的位图 */
+	unsigned long keybit[BITS_TO_LONGS(KEY_CNT)];	 /* 按键值的位图 */
+	unsigned long relbit[BITS_TO_LONGS(REL_CNT)];	/* 相对坐标的位图 */
+	unsigned long absbit[BITS_TO_LONGS(ABS_CNT)];	 /* 绝对坐标的位图 */
+	unsigned long mscbit[BITS_TO_LONGS(MSC_CNT)];	/* 杂项事件的位图 */
+	unsigned long ledbit[BITS_TO_LONGS(LED_CNT)];	 /*LED 相关的位图 */
+	unsigned long sndbit[BITS_TO_LONGS(SND_CNT)];	/* sound 有关的位图 */
+	unsigned long ffbit[BITS_TO_LONGS(FF_CNT)];		/* 压力反馈的位图 */
+	unsigned long swbit[BITS_TO_LONGS(SW_CNT)];		/*开关状态的位图 */
 
 	unsigned int hint_events_per_packet;
 
@@ -348,8 +357,26 @@ struct input_handle {
 	struct list_head	h_node;
 };
 
+/**
+ * @function: 申请一个 input_dev
+ * @parameter: 
+ * @return: 
+ *     success: 申请到的 input_dev
+ *     error:
+ * @note: 
+ */
 struct input_dev __must_check *input_allocate_device(void);
 struct input_dev __must_check *devm_input_allocate_device(struct device *);
+
+/**
+ * @function: 注销的 input 设备
+ * @parameter: 
+ * 		dev：需要释放的 input_dev
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void input_free_device(struct input_dev *dev);
 
 static inline struct input_dev *input_get_device(struct input_dev *dev)
@@ -373,7 +400,26 @@ static inline void input_set_drvdata(struct input_dev *dev, void *data)
 	dev_set_drvdata(&dev->dev, data);
 }
 
+/**
+ * @function: 初始化这个 input_dev
+ * @parameter: 
+ * 		dev：要注册的 input_dev 
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 int __must_check input_register_device(struct input_dev *);
+
+/**
+ * @function: 注销 input 驱动
+ * @parameter: 
+ * 		dev：要注销的 input_dev
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void input_unregister_device(struct input_dev *);
 
 void input_reset_device(struct input_dev *);
@@ -409,6 +455,18 @@ int input_flush_device(struct input_handle *handle, struct file *file);
 void input_set_timestamp(struct input_dev *dev, ktime_t timestamp);
 ktime_t *input_get_timestamp(struct input_dev *dev);
 
+/**
+ * @function: 上报指定的事件以及对应的值
+ * @parameter: 
+ * 		dev：需要上报的 input_dev
+ * 		type: 上报的事件类型，比如 EV_KEY
+ * 		code： 事件码，也就是我们注册的按键值，比如 KEY_0、 KEY_1 
+ * 		value：事件值，比如 1 表示按键按下， 0 表示按键松开
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 void input_event(struct input_dev *dev, unsigned int type, unsigned int code, int value);
 void input_inject_event(struct input_handle *handle, unsigned int type, unsigned int code, int value);
 
@@ -437,6 +495,15 @@ static inline void input_report_switch(struct input_dev *dev, unsigned int code,
 	input_event(dev, EV_SW, code, !!value);
 }
 
+/**
+ * @function: 告诉 Linux 内核 input 子系统上报结束
+ * @parameter: 
+ * 		dev：需要上报同步事件的 input_dev
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void input_sync(struct input_dev *dev)
 {
 	input_event(dev, EV_SYN, SYN_REPORT, 0);
