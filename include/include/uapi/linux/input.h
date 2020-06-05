@@ -24,10 +24,10 @@
  * Note that __USE_TIME_BITS64 is defined by libc based on
  * application's request to use 64 bit time_t.
  */
-
+/* 表示所有的输入事件 */
 struct input_event {
 #if (__BITS_PER_LONG != 32 || !defined(__USE_TIME_BITS64)) && !defined(__KERNEL__)
-	struct timeval time;
+	struct timeval time;		/* 时间，也就是此事件发生的时间 */
 #define input_event_sec time.tv_sec
 #define input_event_usec time.tv_usec
 #else
@@ -41,9 +41,11 @@ struct input_event {
 #define input_event_sec  __sec
 #define input_event_usec __usec
 #endif
-	__u16 type;
-	__u16 code;
-	__s32 value;
+	__u16 type;		/* 事件类型，比如 EV_KEY，表示此次事件为按键事件 */
+	__u16 code;		/* 事件码，比如在 EV_KEY 事件中 code 就表示具体的按键码，如： KEY_0、 KEY_1这些按键 */
+	__s32 value;	/* 值，比如 EV_KEY 事件中 value 就是按键值，表示按键有没有被按下，
+						如果为 1 的话说明按键按下，
+						如果为 0 的话说明按键没有被按下或者按键松开了 */
 };
 
 /*
