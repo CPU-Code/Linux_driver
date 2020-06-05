@@ -143,7 +143,9 @@ code:
 
     platform: platform设备驱动
 
-    dtsplatform:: 设备树platform
+    dtsplatform: 设备树platform
+
+    miscbeep：蜂鸣器杂项驱动
 
 ## 使用说明
 
