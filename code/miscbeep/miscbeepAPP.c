@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-06-04 22:57:14
- * @LastEditTime: 2020-06-05 09:33:32
+ * @LastEditTime: 2020-06-05 09:49:33
  * @FilePath: \Linux_driver\code\miscbeep\miscbeepAPP.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 		return -1;
     }
 
-    databuf[0] = atoi(argv[2]);	/* 要执行的操作：打开或关闭 */
+    databuf[0] = atoi(argv[2]);	    /* 要执行的操作：打开或关闭 */
+    
     retvalue = write(fd, databuf, sizeof(databuf));
     if(retvalue < 0)
     {

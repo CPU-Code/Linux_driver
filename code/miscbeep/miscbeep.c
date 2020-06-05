@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-06-04 22:57:04
- * @LastEditTime: 2020-06-05 09:37:11
+ * @LastEditTime: 2020-06-05 09:50:26
  * @FilePath: \Linux_driver\code\miscbeep\miscbeep.c
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
