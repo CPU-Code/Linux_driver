@@ -67,7 +67,9 @@
  * need (one or more of IGNORE_NAK, NO_RD_ACK, NOSTART, and REV_DIR_ADDR).
  */
 struct i2c_msg {
+	/*  从机地址 */
 	__u16 addr;	/* slave address			*/
+	/*  标志 */
 	__u16 flags;
 #define I2C_M_RD		0x0001	/* read data, from slave to master */
 					/* I2C_M_RD is guaranteed to be 0x0001! */
@@ -81,7 +83,9 @@ struct i2c_msg {
 #define I2C_M_REV_DIR_ADDR	0x2000	/* if I2C_FUNC_PROTOCOL_MANGLING */
 #define I2C_M_NOSTART		0x4000	/* if I2C_FUNC_NOSTART */
 #define I2C_M_STOP		0x8000	/* if I2C_FUNC_PROTOCOL_MANGLING */
+	/* 消息(本 msg)长度 */
 	__u16 len;		/* msg length				*/
+	/*   消息数据 */
 	__u8 *buf;		/* pointer to msg data			*/
 };
 
