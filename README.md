@@ -50,6 +50,7 @@ inlcude：
             platform_device.h: platform 设备
             miscdevice.h: MISC 设备
             input.h: input设备
+            i2c.h: iic传输函数接口
 
         asm-generic:
             bitops:
@@ -66,6 +67,7 @@ inlcude：
                 major.h:  input 子系统的所有设备主设备号都为 13 
                 input.h:  表示所有的输入事件
                 time.h:  时间
+                i2c.h: 处理初始信息
 
 
     arch
@@ -89,6 +91,7 @@ inlcude：
 
             mach-imx：
                 mach-imx6ul.c
+                mach-armadillo5x0.c：
 
             kernel：
                 setup.c
