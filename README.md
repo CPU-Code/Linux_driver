@@ -168,6 +168,8 @@ code:
 
     input:  input 子系统
 
+    iic：陀螺仪IIC协议
+
 ## 使用说明
 
 #### 初次编译
