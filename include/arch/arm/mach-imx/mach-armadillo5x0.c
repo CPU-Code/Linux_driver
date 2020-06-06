@@ -244,6 +244,7 @@ static struct mxc_usbh_platform_data usbh2_pdata __initdata = {
 #define ARMADILLO5X0_RTC_GPIO	IOMUX_TO_GPIO(MX31_PIN_SRXD4)
 
 static struct i2c_board_info armadillo5x0_i2c_rtc = {
+	/* 初始化工作 */
 	I2C_BOARD_INFO("s35390a", 0x30),
 };
 
