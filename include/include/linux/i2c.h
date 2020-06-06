@@ -61,6 +61,17 @@ extern int i2c_transfer_buffer_flags(const struct i2c_client *client,
  *
  * Returns negative errno, or else the number of bytes read.
  */
+/**
+ * @function: I2C 数据接收函数
+ * @parameter: 
+ * 		client：I2C 设备对应的 i2c_client
+ * 		buf：要接收的数据
+ * 		count：要接收的数据字节数，要小于 64KB
+ * @return: 
+ *     success: 其他非负值，发送的字节数
+ *     error: 负值
+ * @note: 
+ */
 static inline int i2c_master_recv(const struct i2c_client *client,
 				  char *buf, int count)
 {
@@ -91,6 +102,17 @@ static inline int i2c_master_recv_dmasafe(const struct i2c_client *client,
  *
  * Returns negative errno, or else the number of bytes written.
  */
+/**
+ * @function:  I2C 数据发送函数
+ * @parameter: 
+ * 		client：I2C 设备对应的 i2c_client
+ * 		buf：要发送的数据
+ * 		count：要发送的数据字节数，要小于 64KB
+ * @return: 
+ *     success:其他非负值，发送的字节数
+ *     error: 负值
+ * @note: 
+ */
 static inline int i2c_master_send(const struct i2c_client *client,
 				  const char *buf, int count)
 {
@@ -114,6 +136,17 @@ static inline int i2c_master_send_dmasafe(const struct i2c_client *client,
 };
 
 /* Transfer num messages.
+ */
+/**
+ * @function:  I2C 设备寄存器进行读写操作
+ * @parameter: 
+ * 		adap：所使用的 I2C 适配器， i2c_client 会保存其对应的 i2c_adapter
+ * 		msgs：I2C 要发送的一个或多个消息
+ * 		num：消息数量，也就是 msgs 的数量
+ * @return: 
+ *     success: 其他非负值，发送的 msgs 数量
+ *     error: 负值
+ * @note: 
  */
 extern int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 			int num);
@@ -250,10 +283,12 @@ enum i2c_alert_protocol {
  * else with it. In particular, calling dev_dbg and friends on it is
  * not allowed.
  */
+/* 驱动内容 */
 struct i2c_driver {
 	unsigned int class;
 
 	/* Standard driver model interfaces */
+	/* 当 I2C 设备和驱动匹配成功以后 probe 函数就会执行，和 platform 驱动一样 */
 	int (*probe)(struct i2c_client *client, const struct i2c_device_id *id);
 	int (*remove)(struct i2c_client *client);
 
@@ -279,8 +314,12 @@ struct i2c_driver {
 	 * with the device.
 	 */
 	int (*command)(struct i2c_client *client, unsigned int cmd, void *arg);
-
+	/** 
+	 *如果使用设备树的话，需要设置 device_driver 的of_match_table 成员变量，
+	 * 也就是驱动的兼容(compatible)属性
+	 */
 	struct device_driver driver;
+	/*  id_table 是传统的、未使用设备树的设备匹配 ID 表 */
 	const struct i2c_device_id *id_table;
 
 	/* Device detection callback for automatic device creation */
@@ -311,7 +350,10 @@ struct i2c_driver {
  * i2c bus. The behaviour exposed to Linux is defined by the driver
  * managing the device.
  */
+/* 描述设备信息 */
 struct i2c_client {
+
+	/*标志 */
 	unsigned short flags;		/* div., see below		*/
 #define I2C_CLIENT_PEC		0x04	/* Use Packet Error Checking */
 #define I2C_CLIENT_TEN		0x10	/* we have a ten bit chip address */
@@ -322,13 +364,18 @@ struct i2c_client {
 #define I2C_CLIENT_SCCB		0x9000	/* Use Omnivision SCCB protocol */
 					/* Must match I2C_M_STOP|IGNORE_NAK */
 
+	/* 芯片地址， 7 位，存在低 7 位 ?*/
 	unsigned short addr;		/* chip address - NOTE: 7bit	*/
 					/* addresses are stored in the	*/
 					/* _LOWER_ 7 bits		*/
+	/* 名字 */
 	char name[I2C_NAME_SIZE];
+	/* 对应的 I2C 适配器 */
 	struct i2c_adapter *adapter;	/* the adapter we sit on	*/
+	/* 设备结构体 */
 	struct device dev;		/* the device structure		*/
 	int init_irq;			/* irq set at initialization	*/
+	/*  中断 */
 	int irq;			/* irq issued by device		*/
 	struct list_head detected;
 #if IS_ENABLED(CONFIG_I2C_SLAVE)
@@ -407,10 +454,11 @@ static inline bool i2c_detect_slave_mode(struct device *dev) { return false; }
  * bus numbers identify adapters that aren't yet available.  For add-on boards,
  * i2c_new_device() does this dynamically with the adapter already known.
  */
+/* 描述一个具体的 I2C 设备 */
 struct i2c_board_info {
-	char		type[I2C_NAME_SIZE];
-	unsigned short	flags;
-	unsigned short	addr;
+	char		type[I2C_NAME_SIZE];	/* I2C 设备名字 */
+	unsigned short	flags;				/* 标志 */
+	unsigned short	addr;				/* I2C 器件地址 */
 	const char	*dev_name;
 	void		*platform_data;
 	struct device_node *of_node;
@@ -524,6 +572,7 @@ i2c_register_board_info(int busnum, struct i2c_board_info const *info,
  * type of error code that occurred during the transfer, as documented in the
  * Kernel Documentation file Documentation/i2c/fault-codes.rst.
  */
+/* I2C 适配器与 IIC 设备进行通信的方法 */
 struct i2c_algorithm {
 	/*
 	 * If an adapter algorithm can't do I2C-level access, set master_xfer
@@ -534,10 +583,12 @@ struct i2c_algorithm {
 	 * master_xfer should return the number of messages successfully
 	 * processed, or a negative value on error
 	 */
+	/*  I2C 适配器的传输函数，可以通过此函数来完成与 IIC 设备之间的通信 */
 	int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs,
 			   int num);
 	int (*master_xfer_atomic)(struct i2c_adapter *adap,
 				   struct i2c_msg *msgs, int num);
+	/* SMBUS 总线的传输函数 */
 	int (*smbus_xfer)(struct i2c_adapter *adap, u16 addr,
 			  unsigned short flags, char read_write,
 			  u8 command, int size, union i2c_smbus_data *data);
@@ -692,6 +743,7 @@ struct i2c_adapter_quirks {
 struct i2c_adapter {
 	struct module *owner;
 	unsigned int class;		  /* classes to allow probing for */
+	 /* 总线访问算法 */
 	const struct i2c_algorithm *algo; /* the algorithm to access the bus */
 	void *algo_data;
 
@@ -840,11 +892,61 @@ static inline void i2c_mark_adapter_resumed(struct i2c_adapter *adap)
 /* administration...
  */
 #if IS_ENABLED(CONFIG_I2C)
+
+/**
+ * @function: 向系统注册设置好的 i2c_adapter，使用动态的总线号
+ * @parameter: 
+ * 		adap：要添加到 Linux 内核中的 i2c_adapter，也就是 I2C 适配器
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 extern int i2c_add_adapter(struct i2c_adapter *adap);
+
+/**
+ * @function: 删除 I2C 适配器
+ * @parameter: 
+ * 		adap：要删除的 I2C 适配器
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void i2c_del_adapter(struct i2c_adapter *adap);
+
+/**
+ * @function: 向系统注册设置好的 i2c_adapter，使用静态总线号
+ * @parameter: 
+ * 		 adap：要添加到 Linux 内核中的 i2c_adapter，也就是 I2C 适配器
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 extern int i2c_add_numbered_adapter(struct i2c_adapter *adap);
 
+/**
+ * @function: 注册这个 i2c_driver
+ * @parameter: 
+ * 		owner：一般为 THIS_MODULE
+ * 		driver：要注册的 i2c_driver
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 extern int i2c_register_driver(struct module *owner, struct i2c_driver *driver);
+
+/**
+ * @function: 注销 I2C 设备驱动
+ * @parameter: 
+ * 		driver：要注销的 i2c_driver
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern void i2c_del_driver(struct i2c_driver *driver);
 
 /* use a define to avoid include chaining to get THIS_MODULE */
