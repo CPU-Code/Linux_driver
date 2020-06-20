@@ -273,8 +273,10 @@ struct spi_transfer;
  * Examples of such upper levels include frameworks like MTD, networking,
  * MMC, RTC, filesystem character device nodes, and hardware monitoring.
  */
+/*  spi 设备驱动 */
 struct spi_driver {
 	const struct spi_device_id *id_table;
+	/* 当 SPI 设备和驱动匹配成功，以后 probe 函数就会执行 */
 	int			(*probe)(struct spi_device *spi);
 	int			(*remove)(struct spi_device *spi);
 	void			(*shutdown)(struct spi_device *spi);
@@ -293,6 +295,15 @@ extern int __spi_register_driver(struct module *owner, struct spi_driver *sdrv);
  * @sdrv: the driver to unregister
  * Context: can sleep
  */
+/**
+ * @function: 完成 spi_driver 的注销
+ * @parameter: 
+ * 		sdrv： 要注销的 spi_driver
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void spi_unregister_driver(struct spi_driver *sdrv)
 {
 	if (sdrv)
@@ -300,6 +311,15 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
 }
 
 /* use a define to avoid include chaining to get THIS_MODULE */
+/**
+ * @function: spi_driver 注册函数
+ * @parameter: 
+ * 		sdrv： 要注册的 spi_driver
+ * @return: 
+ *     success: 0
+ *     error: 赋值
+ * @note: 
+ */
 #define spi_register_driver(driver) \
 	__spi_register_driver(THIS_MODULE, driver)
 
@@ -552,6 +572,7 @@ struct spi_controller {
 	 * + The message transfers use clock and SPI mode parameters
 	 *   previously established by setup() for this device
 	 */
+	/* 控制器数据传输函数 */
 	int			(*transfer)(struct spi_device *spi,
 						struct spi_message *mesg);
 
@@ -593,6 +614,7 @@ struct spi_controller {
 	size_t				max_dma_len;
 
 	int (*prepare_transfer_hardware)(struct spi_controller *ctlr);
+	/* 用于 SPI 数据发送，用于发送一个 spi_message，SPI 的数据会打包成 spi_message，然后以队列方式发送出去 */
 	int (*transfer_one_message)(struct spi_controller *ctlr,
 				    struct spi_message *mesg);
 	int (*unprepare_transfer_hardware)(struct spi_controller *ctlr);
@@ -698,6 +720,16 @@ void spi_take_timestamp_post(struct spi_controller *ctlr,
 extern struct spi_controller *__spi_alloc_controller(struct device *host,
 						unsigned int size, bool slave);
 
+/**
+ * @function: 申请 spi_master
+ * @parameter: 
+ * 		dev：设备，一般是 platform_device 中的 dev 成员变量
+ * 		size： 私有数据大小，可以通过 spi_master_get_devdata 函数获取到这些私有数据
+ * @return: 
+ *     success: 申请到的 spi_master
+ *     error:
+ * @note: 
+ */
 static inline struct spi_controller *spi_alloc_master(struct device *host,
 						      unsigned int size)
 {
@@ -887,14 +919,19 @@ extern void spi_res_release(struct spi_controller *ctlr,
  * insulate against future API updates.  After you submit a message
  * and its transfers, ignore them until its completion callback.
  */
+/* 描述 SPI 传输信息 */
 struct spi_transfer {
 	/* it's ok if tx_buf == rx_buf (right?)
 	 * for MicroWire, one buffer must be null
 	 * buffers must work with dma_*map_single() calls, unless
 	 *   spi_message.is_dma_mapped reports a pre-existing mapping
 	 */
-	const void	*tx_buf;
-	void		*rx_buf;
+	const void	*tx_buf;	//保存着要发送的数据
+	void		*rx_buf;	//保存接收到的数据
+	/** 
+	 *要进行传输的数据长度， SPI 是全双工通信，
+	 *因此在一次通信中发送和接收的字节数都是一样的，所以 spi_transfer 中也就没有发送长度和接收长度之分 
+	 */
 	unsigned	len;
 
 	dma_addr_t	tx_dma;
@@ -1000,12 +1037,31 @@ static inline void spi_message_init_no_memset(struct spi_message *m)
 	INIT_LIST_HEAD(&m->resources);
 }
 
+/**
+ * @function: spi_message初始化函数
+ * @parameter: 
+ * 		m： 要初始化的 spi_message
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void spi_message_init(struct spi_message *m)
 {
 	memset(m, 0, sizeof *m);
 	spi_message_init_no_memset(m);
 }
 
+/**
+ * @function: 将 spi_transfer 添加到 spi_message 队列中
+ * @parameter: 
+ * 		t： 要添加到队列中的 spi_transfer
+ * 		m： spi_transfer 要加入的 spi_message
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 static inline void
 spi_message_add_tail(struct spi_transfer *t, struct spi_message *m)
 {
@@ -1085,6 +1141,18 @@ extern int spi_set_cs_timing(struct spi_device *spi,
 			     struct spi_delay *inactive);
 
 extern int spi_setup(struct spi_device *spi);
+
+/**
+ * @function: 异步传输不会阻塞的等到 SPI 数据传输完成，SPI 异步传输
+ * @parameter: 
+ * 		spi： 要进行数据传输的 spi_device
+ * 		message：要传输的 spi_message
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 异步传输需要设置 spi_message 中的 complete成员变量， 
+ * 			complete 是一个回调函数，当 SPI 异步传输完成以后此函数就会被调用
+ */
 extern int spi_async(struct spi_device *spi, struct spi_message *message);
 extern int spi_async_locked(struct spi_device *spi,
 			    struct spi_message *message);
@@ -1195,6 +1263,16 @@ extern int spi_split_transfers_maxsize(struct spi_controller *ctlr,
  * they will sleep uninterruptibly until the async transfer completes.
  */
 
+/**
+ * @function: 同步传输会阻塞的等待 SPI 数据传输完成，同步传输函数
+ * @parameter: 
+ * 		spi： 要进行数据传输的 spi_device
+ * 		message：要传输的 spi_message
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 extern int spi_sync(struct spi_device *spi, struct spi_message *message);
 extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
 extern int spi_bus_lock(struct spi_controller *ctlr);
@@ -1496,6 +1574,7 @@ of_find_spi_device_by_node(struct device_node *node)
 #endif /* IS_ENABLED(CONFIG_OF) */
 
 /* Compatibility layer */
+/* SPI 主机驱动 */
 #define spi_master			spi_controller
 
 #define SPI_MASTER_HALF_DUPLEX		SPI_CONTROLLER_HALF_DUPLEX
@@ -1508,13 +1587,42 @@ of_find_spi_device_by_node(struct device_node *node)
 #define spi_master_set_devdata(_ctlr, _data)	\
 	spi_controller_set_devdata(_ctlr, _data)
 #define spi_master_get(_ctlr)		spi_controller_get(_ctlr)
+
+/**
+ * @function: spi_master 的释放
+ * @parameter: 
+ * 		master：要释放的 spi_master
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define spi_master_put(_ctlr)		spi_controller_put(_ctlr)
 #define spi_master_suspend(_ctlr)	spi_controller_suspend(_ctlr)
 #define spi_master_resume(_ctlr)	spi_controller_resume(_ctlr)
 
+/**
+ * @function: spi_master 注册函数
+ * @parameter: 
+ * 		master：要注册的 spi_master
+ * @return: 
+ *     success: 0
+ *     error: 负值
+ * @note: 
+ */
 #define spi_register_master(_ctlr)	spi_register_controller(_ctlr)
 #define devm_spi_register_master(_dev, _ctlr) \
 	devm_spi_register_controller(_dev, _ctlr)
+
+/**
+ * @function: 注销 spi_master 
+ * @parameter: 
+ * 		master：要注销的 spi_master
+ * @return: 
+ *     success: 
+ *     error:
+ * @note: 
+ */
 #define spi_unregister_master(_ctlr)	spi_unregister_controller(_ctlr)
 
 #endif /* __LINUX_SPI_H */
