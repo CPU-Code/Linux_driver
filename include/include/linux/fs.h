@@ -1,7 +1,7 @@
 /*
  * @Author: cpu_code
  * @Date: 2020-05-17 09:41:46
- * @LastEditTime: 2020-06-03 17:20:33
+ * @LastEditTime: 2020-07-08 22:22:29
  * @FilePath: \Linux_driver\include\include\linux\fs.h
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
@@ -478,6 +478,14 @@ struct address_space {
 	 */
 struct request_queue;
 
+/**
+ * @function: 块 设 备 
+ * @parameter: 
+ * @return: 
+ *     success: 
+ *     error: 
+ * @note: 
+ */
 struct block_device {
 	dev_t			bd_dev;  /* not a kdev_t - it's a search key */
 	int			bd_openers;
@@ -498,7 +506,7 @@ struct block_device {
 	/* number of times partitions within this device have been opened. */
 	unsigned		bd_part_count;
 	int			bd_invalidated;
-	struct gendisk *	bd_disk;
+	struct gendisk *	bd_disk;	/* gendisk 结构体指针类型 */
 	struct request_queue *  bd_queue;
 	struct backing_dev_info *bd_bdi;
 	struct list_head	bd_list;
@@ -2597,7 +2605,29 @@ extern struct kmem_cache *names_cachep;
 #define __putname(name)		kmem_cache_free(names_cachep, (void *)(name))
 
 #ifdef CONFIG_BLOCK
+
+/**
+ * @function: 块设备注册函数
+ * @parameter: 
+ * 		major： 主设备号
+ * 		name： 块设备名字
+ * @return: 
+ *     success: 1~255 的自定义主设备号 返回 0 , 如 major = 0 自动分配主设备号 返回 主设备号
+ *     error: 负值
+ * @note: 
+ */
 extern int register_blkdev(unsigned int, const char *);
+
+/**
+ * @function: 注销块设备
+ * @parameter: 
+ * 		major： 要注销的块设备主设备号
+ * 		name： 要注销的块设备名字
+ * @return: 
+ *     success: 
+ *     error: 
+ * @note: 
+ */
 extern void unregister_blkdev(unsigned int, const char *);
 extern void bdev_unhash_inode(dev_t dev);
 extern struct block_device *bdget(dev_t);
