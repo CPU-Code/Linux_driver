@@ -1,30 +1,59 @@
+<!--
+ * @Author: cpu_code
+ * @Date: 2020-07-08 21:13:40
+ * @LastEditTime: 2020-07-12 13:06:22
+ * @FilePath: \Linux_driver\README.md
+ * @Gitee: https://gitee.com/cpu_code
+ * @CSDN: https://blog.csdn.net/qq_44226094
+--> 
+
+# Linux_driver
 
  * @Author: cpu_code
- * @Date: 2020-05-16 21:32:59
- * @LastEditTime: 2020-06-05 21:50:55
+ * @Date: 2020-07-08 21:13:40
+ * @LastEditTime: 2020-07-08 21:15:27
  * @FilePath: \Linux_driver\README.md
  * @Gitee: https://gitee.com/cpu_code
  * @CSDN: https://blog.csdn.net/qq_44226094
 
-# Linux_driver
 
 ## 介绍
 Linux驱动开发
 
+--------------
+
 ## 文件说明
 
-inlcude： 
-    Linux内核文件
+* [inlcude__Linux内核文件](#inlcude__Linux内核文件)
 
-    include:
-        linux:
-            of.h：设备树节点等操作
-            device.h：类、总线
-            cdev.h：字符设备
-            fs.h: 设备号
-            of_gpio.h
-            atomic_fallback.h
-            gpio.h：中断号
+* [code__驱动代码](#code__驱动代码)
+
+----------------------------------
+
+## [inlcude__Linux内核文件](inlcude)
+
+### [include](inlcude/inlcude)
+
+#### [linux](inlcude/inlcude/linux)
+
+* [of.h__设备树节点等操作](inlcude/inlcude/linux/of.h)
+
+* [device.h__类、总线](inlcude/inlcude/linux/device.h)
+
+* [cdev.h__字符设备](inlcude/inlcude/linux/cdev.h)
+
+* [fs.h__设备号](inlcude/inlcude/linux/fs.h)
+
+* [of_gpio.h](inlcude/inlcude/linux/of_gpio.h)
+
+* [atomic_fallback.h](inlcude/inlcude/linux/atomic_fallback.h)
+
+* [gpio.h__中断号](inlcude/inlcude/linux/gpio.h)
+
+* [device.h__类、总线](inlcude/inlcude/linux/device.h)
+
+* [device.h__类、总线](inlcude/inlcude/linux/device.h)
+
             kdev_t.h
             of_fdt.h
             types.h
@@ -52,7 +81,8 @@ inlcude：
             input.h: input设备
             i2c.h: iic传输函数接口
 
-        asm-generic:
+#### [asm-generic](inlcude/inlcude/asm-generic)
+
             bitops:
                 atomic.h
             gpio.h
@@ -61,7 +91,8 @@ inlcude：
             param.h
             current.h: 当前进程
 
-        uapi：
+#### [uapi](inlcude/inlcude/uapi)
+
             linux：
                 input-event-codes.h： 可选的事件类型
                 major.h:  input 子系统的所有设备主设备号都为 13 
@@ -69,8 +100,8 @@ inlcude：
                 time.h:  时间
                 i2c.h: 处理初始信息
 
+### [arch](inlcude/arch)
 
-    arch
         arm:
             boot\dts: 设备树
                 imx6ull.dtsi
@@ -100,7 +131,8 @@ inlcude：
             drivers\of:
                 fdt.c
 
-    kernel:
+### [kernel](inlcude/kernel)
+
         softirq.c: 软中断
         workqueue_internal.h: 工作线程
         workqueue.c: 工作队列
@@ -109,66 +141,78 @@ inlcude：
         sched:
             wait.c: 等待队列项添加
 
-
-    drivers/of:
+### [drivers](inlcude/drivers)
+    /of:
         irq.c: 设备号
 
     Documentation\devicetree\bindings: 绑定文档，设备树是用来描述板子上的设备信息的，不同的设备其信息不同，反映到设备树中就是属性不同
 
-    scripts\dtc: dtc工具
+### [scripts](inlcude/scripts)
+    \dtc: dtc工具
         Makefile
 
-uboot_include： 
-    uboot的文件
+-------------------------
 
-    common:
-        fdt_support.c：chosen 节点的 bootargs 参数 生成
+## [uboot_include__uboot的文件](uboot_include)
 
-code:
+### [common](uboot_include/common)
 
-    1chrdevbase：字符驱动开发的模板
+* [fdt_support.c__chosen 节点的 bootargs 参数 生成](uboot_include/common/fdt_support.c)
 
-    2Led：LED驱动开发
 
-    3newchrled：新LED字符驱动开发
+------------------------------------
 
-    4dtsled:
+## [code__驱动代码](code)
 
-    5dtsled:
+* [chrdevbase__字符驱动开发的模板](code/chrdevbase)
 
-    6gpioled:
+* [Led__LED驱动开发](code/Led)
 
-    7beep:
+* [newchrled__新LED字符驱动开发](code/newchrled)
 
-    8atomic:
+* [mydts__设备树](code/mydts)
 
-    9spinlock:
+* [dtsled__](code/dtsled)
 
-    10
+* [gpioled__](code/gpioled)
 
-    11
+* [beep__](code/beep)
 
-    12
+* [atomic__](code/atomic)
 
-    13
+* [spinlock__](code/spinlock)
 
-    14irq：中断实验
+* [semaphore__](code/semaphore)
 
-    block: 堵塞IO
+* [mutex__](code/mutex)
 
-    noblock: 非堵塞
+* [key__](code/key)
 
-    asyncnoti: 异步通知
+* [timer__](code/timer)
 
-    platform: platform设备驱动
+* [irq__中断实验](code/irq)
 
-    dtsplatform: 设备树platform
+* [block__堵塞IO](code/block)
 
-    miscbeep：蜂鸣器杂项驱动
+* [noblock__非堵塞](code/noblock)
 
-    input:  input 子系统
+* [asyncnoti__异步通知](code/asyncnoti)
 
-    iic：陀螺仪IIC协议
+* [platform__platform设备驱动](code/platform)
+
+* [dtsplatform__设备树platform](code/dtsplatform)
+
+* [miscbeep__蜂鸣器杂项驱动](code/miscbeep)
+
+* [input__input子系统](code/input)
+
+* [iic__陀螺仪IIC协议](code/iic)
+
+* [spi__SPI协议](code/spi)
+
+
+-----------------------------
+
 
 ## 使用说明
 
@@ -243,6 +287,7 @@ mknod /dev/xxx 字符设备 主设备号 次设备号
 rmmod xxx.ko
 ```
 
+-----------------------------
 
 ## 错误
 
